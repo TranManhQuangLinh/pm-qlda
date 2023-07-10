@@ -1,38 +1,64 @@
-.App {
-  text-align: center;
+/* Sidebar */
+.accordion-button:focus {
+    box-shadow: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.sidebar-item>a {
+    /* cursor: pointer; */
+    text-decoration: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.sidebar-item:hover>a {
+    color: coral;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.accordion-button {
+    font-size: 1.5rem;
 }
 
-.App-link {
-  color: #61dafb;
+.selected>a {
+    color: coral;
+    font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* DanhSach */
+.title {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+.btn-tao {
+    font-size: 1.5rem;
+    width: auto;
+}
+
+.danh-sach-table {
+    margin-top: 1rem;
+}
+
+.table>tbody>tr {
+    cursor: pointer;
+}
+
+.active {
+    color: #0DA738 !important;
+}
+
+.inactive {
+    color: #CB1414 !important;
+}
+
+.page-number {
+    width: 50px;
+    margin: 0 20px;
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+}
+
+/* error page */
+#error-page>p>i {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
 }
