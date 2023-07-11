@@ -9,6 +9,9 @@ import {
 } from "react-router-dom";
 import ErrorPage from './error-page';
 import DanhSach from './routes/DanhSach';
+import TaoMoi, {
+  action as actionTaoMoi
+} from './routes/TaoMoi';
 
 const router = createBrowserRouter([
   {
@@ -17,8 +20,24 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "danhsach/loaiduan",
-        element: <DanhSach />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            element: <DanhSach />,
+          },
+          {
+            path: "danhsach/loaiduan",
+            element: <DanhSach />,
+
+          },
+          {
+            path: "danhsach/loaiduan/taomoi",
+            element: <TaoMoi />,
+            action: actionTaoMoi,
+          },
+        ]
+
       },
     ],
   },

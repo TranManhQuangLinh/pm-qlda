@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from '../components/Table';
+import { Link } from "react-router-dom";
 
 function DanhSach() {
     const data = [
@@ -47,16 +48,14 @@ function DanhSach() {
         },
     ];
 
-
-
     return (
         <div className='container'>
             <div className='row'>
                 <div className="title">Loại dự án</div>
             </div>
-            <div className='row justify-content-end'>
+            <Link to={'/danhsach/loaiduan/taomoi'} className='row justify-content-end'>
                 <button type="button" className="btn-tao btn btn-primary">Tạo</button>
-            </div>
+            </Link>
             <div className='row'>
                 <Table data={data} columns={columns} />
             </div>

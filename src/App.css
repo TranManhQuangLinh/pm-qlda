@@ -21,6 +21,15 @@
     font-weight: bold;
 }
 
+
+/* error page */
+#error-page>p>i {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
 /* DanhSach */
 .title {
     font-size: 1.5rem;
@@ -55,10 +64,21 @@
     text-align: center;
 }
 
-/* error page */
-#error-page>p>i {
-    display: block;
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
+/* TaoMoi */
+#contact-form {
+    margin: 100px auto 0 auto;
 }
+
+.form-select {
+    width: auto;
+}
+
+.form-select:hover {
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+}
+
+.form-select:focus {
+    border-color: black;
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+}
+
