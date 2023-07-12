@@ -1,32 +1,41 @@
 import React from 'react';
 import Table from '../components/Table';
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { getDSLoaiDuAn } from '../database';
+
+export async function loader({ request }) {
+    const data = await getDSLoaiDuAn()
+    return { data }
+}
 
 function DanhSach() {
-    const data = [
-        {
-            ten: "AI",
-            mo_ta: "Nhận diện giọng nói",
-            uu_tien: "1",
-            trang_thai: "ACTIVE"
-        },
-        {
-            ten: "Ecommerce",
-            mo_ta: "Web bán hàng",
-            uu_tien: "2",
-            trang_thai: "INACTIVE"
-        },
-        // Add more data objects as needed
-    ];
+    const { data } = useLoaderData()
+    // const data = {
+    //     '0rjlnjz': {
+    //         mota: "",
+    //         ten: "js",
+    //         trangthai: "inactive",
+    //         trongso: "1"
+    //     },
+    //     '4r0vt4b':
+    //     {
+    //         mota: "asd",
+    //         ten: "js",
+    //         trangthai: "active",
+    //         trongso: "1"
+    //     }
+    // }
+    
+    const newData = { ...data };
 
-    // Generate additional data objects
-    for (let i = 0; i < 10000; i++) {
-        data.push({
-            ten: `Project ${i + 3}`,
-            mo_ta: `Description ${i + 3}`,
-            uu_tien: `${i + 3}`,
-            trang_thai: i % 2 === 0 ? "ACTIVE" : "INACTIVE",
-        });
+    for (let i = 0; i < 100; i++) {
+        const id = Math.random().toString(36).substring(2, 9);
+        newData[id] = {
+            mota: `Description ${i + 1}`,
+            ten: `Project ${i + 1}`,
+            trangthai: i % 2 === 0 ? "active" : "inactive",
+            trongso: `${i + 1}`
+        };
     }
 
     const columns = [
@@ -35,15 +44,15 @@ function DanhSach() {
             text: "Tên"
         },
         {
-            dataField: "mo_ta",
+            dataField: "mota",
             text: "Mô tả"
         },
         {
-            dataField: "uu_tien",
+            dataField: "trongso",
             text: "Ưu tiên"
         },
         {
-            dataField: "trang_thai",
+            dataField: "trangthai",
             text: "Trạng thái"
         },
     ];
@@ -53,11 +62,11 @@ function DanhSach() {
             <div className='row'>
                 <div className="title">Loại dự án</div>
             </div>
-            <Link to={'/danhsach/loaiduan/taomoi'} className='row justify-content-end'>
-                <button type="button" className="btn-tao btn btn-primary">Tạo</button>
-            </Link>
+            <div className='row justify-content-end'>
+                <Link to={'/danhsach/loaiduan/taomoi'} type="button" className="btn-tao btn btn-primary">Tạo</Link>
+            </div>
             <div className='row'>
-                <Table data={data} columns={columns} />
+                <Table data={newData} columns={columns} />
             </div>
 
         </div>

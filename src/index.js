@@ -8,10 +8,18 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import ErrorPage from './error-page';
-import DanhSach from './routes/DanhSach';
-import TaoMoi, {
-  action as actionTaoMoi
-} from './routes/TaoMoi';
+import DanhSach, {
+  loader as danhSachLoader
+} from './routes/DanhSach';
+import TaoMoiSua, {
+  actionTaoMoi,
+  actionSua,
+  loaderSua,
+  loaderTaoMoi
+} from './routes/TaoMoiSua';
+import {
+  action as actionXoa
+} from './routes/xoa'
 
 const router = createBrowserRouter([
   {
@@ -25,16 +33,30 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <DanhSach />,
+            loader: danhSachLoader,
+
           },
           {
             path: "danhsach/loaiduan",
             element: <DanhSach />,
-
+            loader: danhSachLoader,
           },
           {
             path: "danhsach/loaiduan/taomoi",
-            element: <TaoMoi />,
+            element: <TaoMoiSua />,
             action: actionTaoMoi,
+            loader: loaderTaoMoi,
+          },
+          {
+            path: "danhsach/loaiduan/sua/:idLDA",
+            element: <TaoMoiSua />,
+            loader: loaderSua,
+            action: actionSua,
+          },
+          {
+            path: "danhsach/loaiduan/xoa/:idLDA",
+            action: actionXoa,
+            element: <></>,
           },
         ]
 

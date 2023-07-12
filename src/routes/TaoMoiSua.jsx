@@ -1,17 +1,43 @@
-import { Form, redirect, useNavigate } from "react-router-dom";
-import { taoMoiLoaiDuAn } from "../database";
+import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
+import { getLoaiDuAn, suaLoaiDuAn, taoMoiLoaiDuAn } from "../database";
 
-export async function action({ request }) {
+export async function actionTaoMoi({ request }) {
     const formData = await request.formData();
     const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
-    console.log(newObj);
     const fbObj = await taoMoiLoaiDuAn(newObj);
-    console.log('fbObj:', fbObj);
+    // console.log('fbObj:', fbObj);
     return redirect(`/danhsach/loaiduan`);
 }
 
-export default function TaoMoi() {
+export async function actionSua({ request, params }) {
+    const formData = await request.formData();
+    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const fbObj = await suaLoaiDuAn(params.idLDA, newObj)
+    // console.log('fbObj:', fbObj);
+    return redirect(`/danhsach/loaiduan`);
+}
+
+export async function loaderSua({ params }) {
+    const obj = await getLoaiDuAn(params.idLDA)
+    if (!obj) {
+        throw new Response("", {
+            status: 404,
+            statusText: "Not Found",
+        });
+    }
+    return { obj };
+}
+
+export async function loaderTaoMoi() {
+    const obj = {}
+    return { obj }
+}
+
+export default function TaoMoiSua() {
     const navigate = useNavigate();
+    const { obj } = useLoaderData()
+    
+    // console.log(obj);
 
     return (
         <Form method="post" id="contact-form">
@@ -22,7 +48,7 @@ export default function TaoMoi() {
                     type="text"
                     name="ten"
                     placeholder="Tên loại dự án"
-                // defaultValue={contact.twitter}
+                defaultValue={obj.ten}
                 />
             </label>
             <label>
@@ -31,12 +57,16 @@ export default function TaoMoi() {
                     type="text"
                     name="trongso"
                     placeholder="1, 2, 3..."
-                // defaultValue={contact.avatar}
+                defaultValue={obj.trongso}
                 />
             </label>
             <label>
                 <span>Trạng thái</span>
-                <select className="form-select" name="trangthai">
+                <select
+                    className="form-select"
+                    name="trangthai"
+                    defaultValue={obj.trangthai}
+                >
                     <option value={'active'}>ACTIVE</option>
                     <option value={'inactive'}>INACTIVE</option>
                 </select>
@@ -45,7 +75,7 @@ export default function TaoMoi() {
                 <span>Mô tả</span>
                 <textarea
                     name="mota"
-                    // defaultValue={contact.notes}
+                    defaultValue={obj.mota}
                     rows={6}
                 />
             </label>

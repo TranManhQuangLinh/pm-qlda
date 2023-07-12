@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, update } from "firebase/database";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,10 +39,59 @@ const db = getDatabase(app);
 // }
 
 export async function taoMoiLoaiDuAn(obj) {
-  const id = Math.random().toString(36).substring(2, 9)
-  await set(ref(db, 'danh_muc/loai_du_an/' + id), obj)
+  // const id = Math.random().toString(36).substring(2, 9)
+  // await set(ref(db, 'danh_muc/loai_du_an/' + id), obj)
+
+  const id = push(child(ref(db), 'danh_muc/loai_du_an')).key;
+  const updates = {}
+  updates['danh_muc/loai_du_an/' + id] = obj
+  await update(ref(db), updates)
   return {
     id: id,
     ...obj,
   }
+}
+
+export async function suaLoaiDuAn(id, obj) {
+  const updates = {}
+  updates['danh_muc/loai_du_an/' + id] = obj
+  await update(ref(db), updates)
+  return {
+    id: id,
+    ...obj,
+  }
+}
+
+export async function xoaLoaiDuAn(id) {
+  const nodeRef = ref(db, `danh_muc/loai_du_an/${id}`);
+  await remove(nodeRef);
+}
+
+export async function getDSLoaiDuAn() {
+  try {
+    const snapshot = await get(child(ref(db), 'danh_muc/loai_du_an'));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available");
+      return {};
+    }
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+}
+
+export async function getLoaiDuAn(id) {
+  try {
+    const snapshot = await get(child(ref(db), `danh_muc/loai_du_an/${id}`));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return
 }

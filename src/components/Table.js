@@ -1,24 +1,36 @@
 import { useState } from "react";
+import { useNavigate, useSearchParams, Form } from 'react-router-dom';
 
 function Table({ data, columns }) {
-
-
-    // const itemsPerPageOptions = [5, 10, 20, 30, 40, 50]; // Options for items per page
-
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    // const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[0]);
-    const itemsPerPage = 10
-    // Calculate pagination values
-    const totalItems = data.length;
+    const urlPage = parseInt(searchParams.get('page'));
+    //   console.log(urlPage);
+
+    if (!isNaN(urlPage) && urlPage !== currentPage) {
+        setCurrentPage(urlPage);
+    }
+
+    if (isNaN(urlPage) && currentPage !== 1) {
+        setCurrentPage(1)
+    }
+
+    const navigate = useNavigate();
+
+    const itemsPerPage = 10;
+    const totalItems = Object.keys(data).length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentData = data.slice(startIndex, endIndex);
+    const currentData = Object.values(data).slice(startIndex, endIndex);
 
-    // Handle page change
     const handlePageChange = (page) => {
         setCurrentPage(page);
+        searchParams.set('page', page.toString());
+
+        const isFirstSearch = isNaN(urlPage);
+        navigate(`?${searchParams.toString()}`, { replace: !isFirstSearch });
     };
 
     const handleInputPageChange = (e) => {
@@ -30,24 +42,19 @@ function Table({ data, columns }) {
                 newPage = totalPages;
             }
             setCurrentPage(newPage);
+            navigate(`?page=${newPage}`);
         } else {
             setCurrentPage(1);
+            navigate(`?page=1`);
         }
     };
 
     const handleInputPageClick = (e) => {
-        var elemLen = e.target.value.length; 
+        var elemLen = e.target.value.length;
         e.target.selectionStart = 0;
         e.target.selectionEnd = elemLen;
         e.target.focus();
-    }
-
-    // // Handle items per page change
-    // const handleItemsPerPageChange = (e) => {
-    //     const newItemsPerPage = parseInt(e.target.value);
-    //     setItemsPerPage(newItemsPerPage);
-    //     setCurrentPage(1);
-    // };
+    };
 
     return (
         <>
@@ -58,24 +65,51 @@ function Table({ data, columns }) {
                         {columns.map((column, index) => (
                             <th key={index}>{column.text}</th>
                         ))}
+                        <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="align-middle">
                     {currentData.map((item, index) => (
                         <tr key={index}>
                             <td>{startIndex + index + 1}</td>
+
                             {columns.map((column, columnIndex) => (
                                 <td
                                     key={columnIndex}
                                     className={
-                                        column.dataField === "trang_thai"
+                                        column.dataField === "trangthai"
                                             ? item[column.dataField].toLowerCase()
                                             : ""
                                     }
                                 >
-                                    {item[column.dataField]}
+                                    {column.dataField === "trangthai"
+                                        ? item[column.dataField].toUpperCase() : item[column.dataField]}
                                 </td>
                             ))}
+
+                            <td className="d-flex justify-content-evenly">
+                                <Form
+                                    action={`sua/${Object.keys(data)[startIndex + index]}`}
+                                >
+                                    <button
+                                        className="btn btn-success btn-lg"
+                                        type="submit"
+                                    >
+                                        Sửa
+                                    </button>
+
+                                </Form>
+                                <Form
+                                    method="post"
+                                    action={`xoa/${Object.keys(data)[startIndex + index]}`}
+                                >
+                                    <button
+                                        className="btn btn-danger btn-lg"
+                                    >
+                                        Xóa
+                                    </button>
+                                </Form>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -99,28 +133,12 @@ function Table({ data, columns }) {
                     className="btn btn-primary"
                     disabled={currentPage === totalPages}
                     onClick={() => handlePageChange(currentPage + 1)}
-                    
                 >
                     &gt;
                 </button>
             </div>
-
-            {/* <div className="items-per-page">
-                <label htmlFor="itemsPerPage">Items per page:</label>
-                <select
-                    id="itemsPerPage"
-                    value={itemsPerPage}
-                    onChange={handleItemsPerPageChange}
-                >
-                    {itemsPerPageOptions.map((option, index) => (
-                        <option key={index} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-            </div> */}
         </>
-    )
+    );
 }
 
-export default Table
+export default Table;
