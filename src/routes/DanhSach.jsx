@@ -1,15 +1,35 @@
 import React from 'react';
 import Table from '../components/Table';
 import { Link, useLoaderData } from "react-router-dom";
-import { getDSLoaiDuAn } from '../database';
+import { getDSDanhMuc } from '../database';
 
-export async function loader({ request }) {
-    const data = await getDSLoaiDuAn()
-    return { data }
+export async function loader({ params }) {
+    const objName = params.objName
+    // console.log(objName);
+    const data = await getDSDanhMuc(objName ? objName : 'loaiduan')
+    return { data, objName }
 }
 
 function DanhSach() {
-    const { data } = useLoaderData()
+    const { data, objName } = useLoaderData()
+    let title
+    switch (objName) {
+        case 'loaiduan':
+            title = 'Loại dự án'
+            break;
+        case 'trangthaiduan':
+            title = 'Trạng thái dự án'
+            break;
+        case 'techstack':
+            title = 'Tech Stack'
+            break;
+        case 'nhomkhachhang':
+            title = 'Nhóm khách hàng'
+            break;
+        default:
+            title = 'Not Found'
+            break;
+    }
     // const data = {
     //     '0rjlnjz': {
     //         mota: "",
@@ -47,26 +67,42 @@ function DanhSach() {
             dataField: "mota",
             text: "Mô tả"
         },
-        {
-            dataField: "trongso",
-            text: "Ưu tiên"
-        },
+        // {
+        //     dataField: "trongso",
+        //     text: "Ưu tiên"
+        // },
+        // {
+        //     dataField: "trangthai",
+        //     text: "Trạng thái"
+        // },
+    ];
+
+    if(!objName || objName === 'loaiduan' || objName === 'nhomkhachhang'){
+        columns.push(
+            {
+                dataField: "trongso",
+                text: "Ưu tiên"
+            }
+            )
+    }
+
+    columns.push(
         {
             dataField: "trangthai",
             text: "Trạng thái"
-        },
-    ];
+        }
+        )
 
     return (
         <div className='container'>
             <div className='row'>
-                <div className="title">Loại dự án</div>
+                <div className="title">{title}</div>
             </div>
             <div className='row justify-content-end'>
-                <Link to={'/danhsach/loaiduan/taomoi'} type="button" className="btn-tao btn btn-primary">Tạo</Link>
+                <Link to={`/danhmuc/${objName ? objName : 'loaiduan'}/taomoi`} type="button" className="btn-tao btn btn-primary">Tạo</Link>
             </div>
             <div className='row'>
-                <Table data={newData} columns={columns} />
+                <Table data={data} columns={columns} />
             </div>
 
         </div>

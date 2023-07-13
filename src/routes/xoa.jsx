@@ -1,7 +1,9 @@
 import { redirect } from "react-router-dom";
-import { xoaLoaiDuAn } from "../database";
+import { xoaDanhMuc } from "../database";
 
 export async function action({ params }) {
-    await xoaLoaiDuAn(params.idLDA);
-    return redirect('/danhsach/loaiduan')
+    await xoaDanhMuc(params.id, params.objName ? params.objName : 'loaiduan');
+    // console.log(params.objNames);
+    return redirect(`/danhmuc/${params.objName ? params.objName : 'loaiduan'}`)
+    // return null
 }

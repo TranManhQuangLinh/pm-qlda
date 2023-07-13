@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App, {
+
+} from './App';
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
@@ -9,7 +11,7 @@ import {
 } from "react-router-dom";
 import ErrorPage from './error-page';
 import DanhSach, {
-  loader as danhSachLoader
+  loader as danhSachLoader,
 } from './routes/DanhSach';
 import TaoMoiSua, {
   actionTaoMoi,
@@ -18,7 +20,7 @@ import TaoMoiSua, {
   loaderTaoMoi
 } from './routes/TaoMoiSua';
 import {
-  action as actionXoa
+  action as actionXoa,
 } from './routes/xoa'
 
 const router = createBrowserRouter([
@@ -34,30 +36,43 @@ const router = createBrowserRouter([
             index: true,
             element: <DanhSach />,
             loader: danhSachLoader,
-
           },
           {
-            path: "danhsach/loaiduan",
-            element: <DanhSach />,
-            loader: danhSachLoader,
-          },
-          {
-            path: "danhsach/loaiduan/taomoi",
-            element: <TaoMoiSua />,
-            action: actionTaoMoi,
-            loader: loaderTaoMoi,
-          },
-          {
-            path: "danhsach/loaiduan/sua/:idLDA",
+            path: "sua/:id",
             element: <TaoMoiSua />,
             loader: loaderSua,
             action: actionSua,
           },
           {
-            path: "danhsach/loaiduan/xoa/:idLDA",
+            path: "xoa/:id",
             action: actionXoa,
             element: <></>,
           },
+          {
+            path: "danhmuc/:objName",
+            element: <DanhSach />,
+            loader: danhSachLoader,
+          },
+          {
+            path: "danhmuc/:objName/taomoi",
+            element: <TaoMoiSua />,
+            action: actionTaoMoi,
+            loader: loaderTaoMoi,
+          },
+          {
+            path: "danhmuc/:objName/sua/:id",
+            element: <TaoMoiSua />,
+            loader: loaderSua,
+            action: actionSua,
+          },
+          {
+            path: "danhmuc/:objName/xoa/:id",
+            action: actionXoa,
+            element: <></>,
+          },
+          {
+            path: ""
+          }
         ]
 
       },

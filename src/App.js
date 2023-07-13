@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import './App.css';
 
 import { Link, Outlet } from 'react-router-dom';
 
 function App() {
+  const [objName , setObjName] = useState('loaiduan')
+  // console.log('app objName:', objName);
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -16,17 +19,17 @@ function App() {
               </h2>
               <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show">
                 <div className="accordion-body">
-                  <div className='sidebar-item selected'>
-                    <Link to={'danhsach/loaiduan'}>Loại dự án</Link>
+                  <div className={`sidebar-item ${objName === 'loaiduan' ? 'selected' : ''}`}>
+                    <Link to={'danhmuc/loaiduan'} onClick={() => setObjName('loaiduan')}>Loại dự án</Link>
                   </div>
-                  <div className='sidebar-item'>
-                    <Link to={''}>Trạng thái dự án</Link>
+                  <div className={`sidebar-item ${objName === 'trangthaiduan' ? 'selected' : ''}`}>
+                    <Link to={'danhmuc/trangthaiduan'} onClick={() => setObjName('trangthaiduan')}>Trạng thái dự án</Link>
                   </div>
-                  <div className='sidebar-item'>
-                    <Link to={''}>Tech stack</Link>
+                  <div className={`sidebar-item ${objName === 'techstack' ? 'selected' : ''}`}>
+                    <Link to={'danhmuc/techstack'} onClick={() => setObjName('techstack')}>Tech stack</Link>
                   </div>
-                  <div className='sidebar-item'>
-                    <Link to={''}>Nhóm khách hàng</Link>
+                  <div className={`sidebar-item ${objName === 'nhomkhachhang' ? 'selected' : ''}`}>
+                    <Link to={'danhmuc/nhomkhachhang'} onClick={() => setObjName('nhomkhachhang')}>Nhóm khách hàng</Link>
                   </div>
                 </div>
               </div>
@@ -39,14 +42,14 @@ function App() {
               </h2>
               <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse show">
                 <div className="accordion-body">
-                  <div className='sidebar-item'>
-                    <Link to={''}>Trung tâm, bộ phận, phòng ban</Link>
+                  <div className={`sidebar-item ${objName === 'ttbppb' ? 'selected' : ''}`}>
+                    <Link to={'quanly/ttbppb'} onClick={() => setObjName('ttbppb')}>Trung tâm, bộ phận, phòng ban</Link>
                   </div>
-                  <div className='sidebar-item'>
-                    <Link to={''}>Nhân sự</Link>
+                  <div className={`sidebar-item ${objName === 'nhansu' ? 'selected' : ''}`}>
+                    <Link to={'quanly/nhansu'} onClick={() => setObjName('nhansu')}>Nhân sự</Link>
                   </div>
-                  <div className='sidebar-item'>
-                    <Link to={''}>Dự án</Link>
+                  <div className={`sidebar-item ${objName === 'duan' ? 'selected' : ''}`}>
+                    <Link to={'quanly/duan'} onClick={() => setObjName('duan')}>Dự án</Link>
                   </div>
                 </div>
               </div>
@@ -59,11 +62,11 @@ function App() {
               </h2>
               <div id="panelsStayOpen-collapseThree" className="accordion-collapse collapse show">
                 <div className="accordion-body">
-                  <div className='sidebar-item'>
-                    <Link to={''}>Số lượng dự án</Link>
+                  <div className={`sidebar-item ${objName === 'soluongduan' ? 'selected' : ''}`}>
+                    <Link to={'baocao/soluongduan'} onClick={() => setObjName('soluongduan')}>Số lượng dự án</Link>
                   </div>
-                  <div className='sidebar-item'>
-                    <Link to={''}>Số lượng nhân sự</Link>
+                  <div className={`sidebar-item ${objName === 'soluongnhansu' ? 'selected' : ''}`}>
+                    <Link to={'baocao/soluongnhansu'} onClick={() => setObjName('soluongnhansu')}>Số lượng nhân sự</Link>
                   </div>
                 </div>
               </div>

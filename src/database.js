@@ -38,38 +38,31 @@ const db = getDatabase(app);
 //   }
 // }
 
-export async function taoMoiLoaiDuAn(obj) {
+// Danh muc
+export async function taoMoiDanhMuc(obj, objName) {
   // const id = Math.random().toString(36).substring(2, 9)
   // await set(ref(db, 'danh_muc/loai_du_an/' + id), obj)
 
-  const id = push(child(ref(db), 'danh_muc/loai_du_an')).key;
+  const id = push(child(ref(db), `danhmuc/${objName}`)).key;
   const updates = {}
-  updates['danh_muc/loai_du_an/' + id] = obj
+  updates[`danhmuc/${objName}/` + id] = obj
   await update(ref(db), updates)
-  return {
-    id: id,
-    ...obj,
-  }
 }
 
-export async function suaLoaiDuAn(id, obj) {
+export async function suaDanhMuc(id, obj, objName) {
   const updates = {}
-  updates['danh_muc/loai_du_an/' + id] = obj
+  updates[`danhmuc/${objName}/` + id] = obj
   await update(ref(db), updates)
-  return {
-    id: id,
-    ...obj,
-  }
 }
 
-export async function xoaLoaiDuAn(id) {
-  const nodeRef = ref(db, `danh_muc/loai_du_an/${id}`);
+export async function xoaDanhMuc(id, objName) {
+  const nodeRef = ref(db, `danhmuc/${objName}/${id}`);
   await remove(nodeRef);
 }
 
-export async function getDSLoaiDuAn() {
+export async function getDSDanhMuc(objName) {
   try {
-    const snapshot = await get(child(ref(db), 'danh_muc/loai_du_an'));
+    const snapshot = await get(child(ref(db), `danhmuc/${objName}`));
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
@@ -82,9 +75,9 @@ export async function getDSLoaiDuAn() {
   }
 }
 
-export async function getLoaiDuAn(id) {
+export async function getDanhMuc(id, objName) {
   try {
-    const snapshot = await get(child(ref(db), `danh_muc/loai_du_an/${id}`));
+    const snapshot = await get(child(ref(db), `danhmuc/${objName}/${id}`));
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
