@@ -1,5 +1,5 @@
 import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
-import { getDanhMuc, suaDanhMuc, taoMoiDanhMuc } from "../database";
+import { getDanhMuc, suaDanhMuc, taoMoiDanhMuc } from "../../../database";
 
 export async function actionTaoMoi({ request, params }) {
     const formData = await request.formData();
@@ -15,10 +15,9 @@ export async function actionSua({ request, params }) {
     return redirect(`/danhmuc/${params.objName ? params.objName : 'loaiduan'}`);
 }
 
-export async function loaderTaoMoi({ params }) {
+export async function loaderTaoMoi() {
     const obj = {}
-    const objName = params.objName
-    return { obj, objName }
+    return { obj }
 }
 
 export async function loaderSua({ params }) {
@@ -33,34 +32,16 @@ export async function loaderSua({ params }) {
     return { obj, objName };
 }
 
-export default function TaoMoiSua() {
+export default function TaoMoiSuaDuAn() {
     const navigate = useNavigate();
-    const { obj, objName } = useLoaderData()
+    // const { obj, objName } = useLoaderData()
     // console.log(obj);
-
-    let title
-    switch (objName) {
-        case 'loaiduan':
-            title = 'Loại dự án'
-            break;
-        case 'trangthaiduan':
-            title = 'Trạng thái dự án'
-            break;
-        case 'techstack':
-            title = 'Tech Stack'
-            break;
-        case 'nhomkhachhang':
-            title = 'Nhóm khách hàng'
-            break;
-        default:
-            title = 'Loại dự án'
-            break;
-    }
+    const obj = {}
 
     return (
         <div className='container'>
             <div className='row'>
-                <div className="title">{title}</div>
+                <div className="title">Dự án</div>
             </div>
             <Form method="post" id="contact-form">
 
@@ -73,33 +54,26 @@ export default function TaoMoiSua() {
                         defaultValue={obj.ten}
                     />
                 </label>
-                {!objName || objName === 'loaiduan' || objName === 'nhomkhachhang' ? <label>
-                    <span>Trọng số ưu tiên</span>
-                    <input
-                        type="text"
-                        name="trongso"
-                        placeholder="1, 2, 3..."
-                        defaultValue={obj.trongso}
-                    />
-                </label> : ''}
+                
                 <label>
-                    <span>Trạng thái</span>
-                    <select
-                        className="form-select"
-                        name="trangthai"
-                        defaultValue={obj.trangthai}
-                    >
-                        <option value={'active'}>ACTIVE</option>
-                        <option value={'inactive'}>INACTIVE</option>
-                    </select>
+                    <span>Loại dự án</span>
+                    
                 </label>
                 <label>
-                    <span>Mô tả</span>
-                    <textarea
-                        name="mota"
-                        defaultValue={obj.mota}
-                        rows={6}
-                    />
+                    <span>Trạng thái dự án</span>
+                    
+                </label>
+                <label>
+                    <span>Tech stack</span>
+                    
+                </label>
+                <label>
+                    <span>Trung tâm phụ trách</span>
+                    
+                </label>
+                <label>
+                    <span>Thành viên trong dự án</span>
+                    
                 </label>
                 <p>
                     <button type="submit">Save</button>

@@ -1,12 +1,13 @@
 import React from 'react';
-import Table from '../components/Table';
+import Table from '../../components/Table';
 import { Link, useLoaderData } from "react-router-dom";
-import { getDSDanhMuc } from '../database';
+import { getDSDanhMuc } from '../../database';
 
 export async function loader({ params }) {
     const objName = params.objName
     // console.log(objName);
     const data = await getDSDanhMuc(objName ? objName : 'loaiduan')
+    // console.log(data);
     return { data, objName }
 }
 
@@ -27,7 +28,7 @@ function DanhSach() {
             title = 'Nhóm khách hàng'
             break;
         default:
-            title = 'Not Found'
+            title = 'Loại dự án'
             break;
     }
     // const data = {

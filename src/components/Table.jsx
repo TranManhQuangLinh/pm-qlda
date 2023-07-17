@@ -21,6 +21,7 @@ function Table({ data, columns }) {
     const itemsPerPage = 10;
     const totalItems = Object.keys(data).length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    // console.log('totalPages', totalPages);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentData = Object.values(data).slice(startIndex, endIndex);
@@ -118,7 +119,7 @@ function Table({ data, columns }) {
             <div className="pagination justify-content-end">
                 <button
                     className="btn btn-primary"
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 1 || totalPages === 0}
                     onClick={() => handlePageChange(currentPage - 1)}
                 >
                     &lt;
@@ -131,7 +132,7 @@ function Table({ data, columns }) {
                 />
                 <button
                     className="btn btn-primary"
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage === totalPages || totalPages === 0}
                     onClick={() => handlePageChange(currentPage + 1)}
                 >
                     &gt;

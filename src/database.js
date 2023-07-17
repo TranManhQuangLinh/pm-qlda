@@ -38,7 +38,7 @@ const db = getDatabase(app);
 //   }
 // }
 
-// Danh muc
+// danh-muc
 export async function taoMoiDanhMuc(obj, objName) {
   // const id = Math.random().toString(36).substring(2, 9)
   // await set(ref(db, 'danh_muc/loai_du_an/' + id), obj)
@@ -88,3 +88,52 @@ export async function getDanhMuc(id, objName) {
   }
   return
 }
+
+// quan-ly
+export async function taoMoiQuanLy(obj, objName) {
+  const id = push(child(ref(db), `quanly/${objName}`)).key;
+  const updates = {}
+  updates[`quanly/${objName}/` + id] = obj
+  await update(ref(db), updates)
+}
+
+export async function suaQuanLy(id, obj, objName) {
+  const updates = {}
+  updates[`quanly/${objName}/` + id] = obj
+  await update(ref(db), updates)
+}
+
+export async function xoaQuanLy(id, objName) {
+  const nodeRef = ref(db, `quanly/${objName}/${id}`);
+  await remove(nodeRef);
+}
+
+export async function getDSQuanLy(objName) {
+  try {
+    const snapshot = await get(child(ref(db), `quanly/${objName}`));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available");
+      return {};
+    }
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+}
+
+export async function getQuanLy(id, objName) {
+  try {
+    const snapshot = await get(child(ref(db), `quanly/${objName}/${id}`));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log("No data available");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return
+}
+

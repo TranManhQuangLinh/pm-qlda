@@ -1,11 +1,21 @@
 import { useState } from 'react';
 import './App.css';
 
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLoaderData } from 'react-router-dom';
+
+export function loader({ params }) {
+  return params.objName ? params.objName : null
+}
 
 function App() {
   const [objName , setObjName] = useState('loaiduan')
   // console.log('app objName:', objName);
+  const paramsObjName = useLoaderData()
+  // console.log(paramsObjName);
+  if(paramsObjName != null && paramsObjName != objName){
+    setObjName(paramsObjName)
+  }
+
   return (
     <div className='container-fluid'>
       <div className='row'>
