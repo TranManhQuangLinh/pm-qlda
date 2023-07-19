@@ -1,20 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
-import { Link, Outlet, useLoaderData } from 'react-router-dom';
-
-export function loader({ params }) {
-  return params.objName ? params.objName : null
-}
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 function App() {
-  const [objName , setObjName] = useState('loaiduan')
-  // console.log('app objName:', objName);
-  const paramsObjName = useLoaderData()
-  // console.log(paramsObjName);
-  if(paramsObjName != null && paramsObjName != objName){
-    setObjName(paramsObjName)
-  }
+  const [objName, setObjName] = useState('projectType');
+  const location = useLocation();
+
+  useEffect(() => {
+    const paramsObjName = location.pathname.split('/')[2];
+    if (paramsObjName && paramsObjName !== objName) {
+      setObjName(paramsObjName);
+    }
+  }, [location.pathname, objName]);
 
   return (
     <div className='container-fluid'>
@@ -29,17 +27,17 @@ function App() {
               </h2>
               <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show">
                 <div className="accordion-body">
-                  <div className={`sidebar-item ${objName === 'loaiduan' ? 'selected' : ''}`}>
-                    <Link to={'danhmuc/loaiduan'} onClick={() => setObjName('loaiduan')}>Loại dự án</Link>
+                  <div className={`sidebar-item ${objName === 'projectType' ? 'selected' : ''}`}>
+                    <Link to={'category/projectType'} onClick={() => setObjName('projectType')}>Loại dự án</Link>
                   </div>
-                  <div className={`sidebar-item ${objName === 'trangthaiduan' ? 'selected' : ''}`}>
-                    <Link to={'danhmuc/trangthaiduan'} onClick={() => setObjName('trangthaiduan')}>Trạng thái dự án</Link>
+                  <div className={`sidebar-item ${objName === 'projectStatus' ? 'selected' : ''}`}>
+                    <Link to={'category/projectStatus'} onClick={() => setObjName('projectStatus')}>Trạng thái dự án</Link>
                   </div>
-                  <div className={`sidebar-item ${objName === 'techstack' ? 'selected' : ''}`}>
-                    <Link to={'danhmuc/techstack'} onClick={() => setObjName('techstack')}>Tech stack</Link>
+                  <div className={`sidebar-item ${objName === 'techStack' ? 'selected' : ''}`}>
+                    <Link to={'category/techStack'} onClick={() => setObjName('techStack')}>Tech stack</Link>
                   </div>
-                  <div className={`sidebar-item ${objName === 'nhomkhachhang' ? 'selected' : ''}`}>
-                    <Link to={'danhmuc/nhomkhachhang'} onClick={() => setObjName('nhomkhachhang')}>Nhóm khách hàng</Link>
+                  <div className={`sidebar-item ${objName === 'customerGroup' ? 'selected' : ''}`}>
+                    <Link to={'category/customerGroup'} onClick={() => setObjName('customerGroup')}>Nhóm khách hàng</Link>
                   </div>
                 </div>
               </div>
@@ -52,14 +50,14 @@ function App() {
               </h2>
               <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse show">
                 <div className="accordion-body">
-                  <div className={`sidebar-item ${objName === 'ttbppb' ? 'selected' : ''}`}>
-                    <Link to={'quanly/ttbppb'} onClick={() => setObjName('ttbppb')}>Trung tâm, bộ phận, phòng ban</Link>
+                  <div className={`sidebar-item ${objName === 'center' ? 'selected' : ''}`}>
+                    <Link to={'management/center'} onClick={() => setObjName('center')}>Trung tâm, bộ phận, phòng ban</Link>
                   </div>
-                  <div className={`sidebar-item ${objName === 'nhansu' ? 'selected' : ''}`}>
-                    <Link to={'quanly/nhansu'} onClick={() => setObjName('nhansu')}>Nhân sự</Link>
+                  <div className={`sidebar-item ${objName === 'personnel' ? 'selected' : ''}`}>
+                    <Link to={'management/personnel'} onClick={() => setObjName('personnel')}>Nhân sự</Link>
                   </div>
-                  <div className={`sidebar-item ${objName === 'duan' ? 'selected' : ''}`}>
-                    <Link to={'quanly/duan'} onClick={() => setObjName('duan')}>Dự án</Link>
+                  <div className={`sidebar-item ${objName === 'project' ? 'selected' : ''}`}>
+                    <Link to={'management/project'} onClick={() => setObjName('project')}>Dự án</Link>
                   </div>
                 </div>
               </div>
@@ -72,11 +70,11 @@ function App() {
               </h2>
               <div id="panelsStayOpen-collapseThree" className="accordion-collapse collapse show">
                 <div className="accordion-body">
-                  <div className={`sidebar-item ${objName === 'soluongduan' ? 'selected' : ''}`}>
-                    <Link to={'baocao/soluongduan'} onClick={() => setObjName('soluongduan')}>Số lượng dự án</Link>
+                  <div className={`sidebar-item ${objName === 'numberOfProjects' ? 'selected' : ''}`}>
+                    <Link to={'report/numberOfProjects'} onClick={() => setObjName('numberOfProjects')}>Số lượng dự án</Link>
                   </div>
-                  <div className={`sidebar-item ${objName === 'soluongnhansu' ? 'selected' : ''}`}>
-                    <Link to={'baocao/soluongnhansu'} onClick={() => setObjName('soluongnhansu')}>Số lượng nhân sự</Link>
+                  <div className={`sidebar-item ${objName === 'numberOfPersonnel' ? 'selected' : ''}`}>
+                    <Link to={'report/numberOfPersonnel'} onClick={() => setObjName('numberOfPersonnel')}>Số lượng nhân sự</Link>
                   </div>
                 </div>
               </div>

@@ -59,7 +59,7 @@ function Table({ data, columns }) {
 
     return (
         <>
-            <table className="danh-sach-table table table-bordered table-hover">
+            <table className="list-table table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -78,19 +78,19 @@ function Table({ data, columns }) {
                                 <td
                                     key={columnIndex}
                                     className={
-                                        column.dataField === "trangthai"
+                                        column.dataField === "status"
                                             ? item[column.dataField].toLowerCase()
                                             : ""
                                     }
                                 >
-                                    {column.dataField === "trangthai"
+                                    {column.dataField === "status"
                                         ? item[column.dataField].toUpperCase() : item[column.dataField]}
                                 </td>
                             ))}
 
                             <td className="d-flex justify-content-evenly">
                                 <Form
-                                    action={`sua/${Object.keys(data)[startIndex + index]}`}
+                                    action={`update/${Object.keys(data)[startIndex + index]}`}
                                 >
                                     <button
                                         className="btn btn-success btn-lg"
@@ -102,7 +102,7 @@ function Table({ data, columns }) {
                                 </Form>
                                 <Form
                                     method="post"
-                                    action={`xoa/${Object.keys(data)[startIndex + index]}`}
+                                    action={`delete/${Object.keys(data)[startIndex + index]}`}
                                 >
                                     <button
                                         className="btn btn-danger btn-lg"

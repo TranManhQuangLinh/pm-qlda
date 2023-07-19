@@ -38,31 +38,31 @@ const db = getDatabase(app);
 //   }
 // }
 
-// danh-muc
-export async function taoMoiDanhMuc(obj, objName) {
+// category
+export async function createCategory(obj, objName) {
   // const id = Math.random().toString(36).substring(2, 9)
   // await set(ref(db, 'danh_muc/loai_du_an/' + id), obj)
 
-  const id = push(child(ref(db), `danhmuc/${objName}`)).key;
+  const id = push(child(ref(db), `category/${objName}`)).key;
   const updates = {}
-  updates[`danhmuc/${objName}/` + id] = obj
+  updates[`category/${objName}/` + id] = obj
   await update(ref(db), updates)
 }
 
-export async function suaDanhMuc(id, obj, objName) {
+export async function updateCategory(id, obj, objName) {
   const updates = {}
-  updates[`danhmuc/${objName}/` + id] = obj
+  updates[`category/${objName}/` + id] = obj
   await update(ref(db), updates)
 }
 
-export async function xoaDanhMuc(id, objName) {
-  const nodeRef = ref(db, `danhmuc/${objName}/${id}`);
+export async function deleteCategory(id, objName) {
+  const nodeRef = ref(db, `category/${objName}/${id}`);
   await remove(nodeRef);
 }
 
-export async function getDSDanhMuc(objName) {
+export async function getListCategory(objName) {
   try {
-    const snapshot = await get(child(ref(db), `danhmuc/${objName}`));
+    const snapshot = await get(child(ref(db), `category/${objName}`));
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
@@ -75,9 +75,9 @@ export async function getDSDanhMuc(objName) {
   }
 }
 
-export async function getDanhMuc(id, objName) {
+export async function getCategory(id, objName) {
   try {
-    const snapshot = await get(child(ref(db), `danhmuc/${objName}/${id}`));
+    const snapshot = await get(child(ref(db), `category/${objName}/${id}`));
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
@@ -89,28 +89,28 @@ export async function getDanhMuc(id, objName) {
   return
 }
 
-// quan-ly
-export async function taoMoiQuanLy(obj, objName) {
-  const id = push(child(ref(db), `quanly/${objName}`)).key;
+// management
+export async function createManagement(obj, objName) {
+  const id = push(child(ref(db), `management/${objName}`)).key;
   const updates = {}
-  updates[`quanly/${objName}/` + id] = obj
+  updates[`management/${objName}/` + id] = obj
   await update(ref(db), updates)
 }
 
-export async function suaQuanLy(id, obj, objName) {
+export async function updateManagement(id, obj, objName) {
   const updates = {}
-  updates[`quanly/${objName}/` + id] = obj
+  updates[`management/${objName}/` + id] = obj
   await update(ref(db), updates)
 }
 
-export async function xoaQuanLy(id, objName) {
-  const nodeRef = ref(db, `quanly/${objName}/${id}`);
+export async function deleteManagement(id, objName) {
+  const nodeRef = ref(db, `management/${objName}/${id}`);
   await remove(nodeRef);
 }
 
-export async function getDSQuanLy(objName) {
+export async function getListManagement(objName) {
   try {
-    const snapshot = await get(child(ref(db), `quanly/${objName}`));
+    const snapshot = await get(child(ref(db), `management/${objName}`));
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
@@ -123,9 +123,9 @@ export async function getDSQuanLy(objName) {
   }
 }
 
-export async function getQuanLy(id, objName) {
+export async function getManagement(id, objName) {
   try {
-    const snapshot = await get(child(ref(db), `quanly/${objName}/${id}`));
+    const snapshot = await get(child(ref(db), `management/${objName}/${id}`));
     if (snapshot.exists()) {
       return snapshot.val();
     } else {

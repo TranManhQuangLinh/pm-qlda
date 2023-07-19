@@ -1,38 +1,52 @@
-import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
-import { getDanhMuc, suaDanhMuc, taoMoiDanhMuc } from "../../../database";
+import { Form, redirect, useNavigate } from "react-router-dom";
+import { createManagement, getListCategory, getListManagement, getManagement, updateManagement } from "../../../database";
 
-export async function actionTaoMoi({ request, params }) {
+export async function createAction({ request }) {
     const formData = await request.formData();
     const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
-    await taoMoiDanhMuc(newObj, params.objName);
-    return redirect(`/danhmuc/${params.objName}`);
+    console.log(newObj);
+    newObj.techStack = formData.getAll("techStack");
+    newObj.project = formData.getAll("project");
+    newObj.personnel = formData.getAll("personnel");
+    console.log(newObj);
+    await createManagement(newObj, 'personnel');
+    return redirect(`/management/center`);
+    // return null
 }
 
-export async function actionSua({ request, params }) {
+export async function updateAction({ request, params }) {
     const formData = await request.formData();
     const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
-    await suaDanhMuc(params.id, newObj, params.objName ? params.objName : 'loaiduan')
-    return redirect(`/danhmuc/${params.objName ? params.objName : 'loaiduan'}`);
+    newObj.techStack = formData.getAll("techStack");
+    newObj.project = formData.getAll("project");
+    newObj.personnel = formData.getAll("personnel");
+    console.log(newObj);
+    await updateManagement(params.id, newObj, 'center')
+    return redirect(`/management/center`);
 }
 
-export async function loaderTaoMoi() {
+export async function createLoader() {
     const obj = {}
-    return { obj }
+    const techStack = await getListCategory('techStack')
+    const project = await getListManagement('project')
+    const personnel = await getListManagement('personnel')
+    return { obj, techStack, project, personnel }
 }
 
-export async function loaderSua({ params }) {
-    const obj = await getDanhMuc(params.id, params.objName ? params.objName : 'loaiduan')
-    const objName = params.objName
+export async function updateLoader({ params }) {
+    const obj = await getManagement(params.id, 'center')
     if (!obj) {
         throw new Response("", {
             status: 404,
             statusText: "Not Found",
         });
     }
-    return { obj, objName };
+    const techStack = await getListCategory('techStack')
+    const project = await getListManagement('project')
+    const personnel = await getListManagement('personnel')
+    return { obj, techStack, project, personnel }
 }
-
-export default function TaoMoiSuaDuAn() {
+export default function CreateUpdateProject() {
     const navigate = useNavigate();
     // const { obj, objName } = useLoaderData()
     // console.log(obj);
@@ -49,9 +63,9 @@ export default function TaoMoiSuaDuAn() {
                     <span>Tên</span>
                     <input
                         type="text"
-                        name="ten"
+                        name="name"
                         placeholder="Tên"
-                        defaultValue={obj.ten}
+                        defaultValue={obj.name}
                     />
                 </label>
                 

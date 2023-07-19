@@ -1,28 +1,28 @@
 import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
-import { getDanhMuc, suaDanhMuc, taoMoiDanhMuc } from "../../database";
+import { createCategory, updateCategory, getCategory } from "../../database";
 
-export async function actionTaoMoi({ request, params }) {
+export async function createAction({ request, params }) {
     const formData = await request.formData();
     const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
-    await taoMoiDanhMuc(newObj, params.objName);
-    return redirect(`/danhmuc/${params.objName}`);
+    await createCategory(newObj, params.objName);
+    return redirect(`/category/${params.objName}`);
 }
 
-export async function actionSua({ request, params }) {
+export async function updateAction({ request, params }) {
     const formData = await request.formData();
     const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
-    await suaDanhMuc(params.id, newObj, params.objName ? params.objName : 'loaiduan')
-    return redirect(`/danhmuc/${params.objName ? params.objName : 'loaiduan'}`);
+    await updateCategory(params.id, newObj, params.objName ? params.objName : 'projectType')
+    return redirect(`/category/${params.objName ? params.objName : 'projectType'}`);
 }
 
-export async function loaderTaoMoi({ params }) {
+export async function createLoader({ params }) {
     const obj = {}
     const objName = params.objName
     return { obj, objName }
 }
 
-export async function loaderSua({ params }) {
-    const obj = await getDanhMuc(params.id, params.objName ? params.objName : 'loaiduan')
+export async function updateLoader({ params }) {
+    const obj = await getCategory(params.id, params.objName ? params.objName : 'projectType')
     const objName = params.objName
     if (!obj) {
         throw new Response("", {
@@ -33,23 +33,23 @@ export async function loaderSua({ params }) {
     return { obj, objName };
 }
 
-export default function TaoMoiSua() {
+export default function CreateUpdate() {
     const navigate = useNavigate();
     const { obj, objName } = useLoaderData()
     // console.log(obj);
 
     let title
     switch (objName) {
-        case 'loaiduan':
+        case 'projectType':
             title = 'Loại dự án'
             break;
-        case 'trangthaiduan':
+        case 'projectStatus':
             title = 'Trạng thái dự án'
             break;
-        case 'techstack':
+        case 'techStack':
             title = 'Tech Stack'
             break;
-        case 'nhomkhachhang':
+        case 'customerGroup':
             title = 'Nhóm khách hàng'
             break;
         default:
@@ -68,26 +68,26 @@ export default function TaoMoiSua() {
                     <span>Tên</span>
                     <input
                         type="text"
-                        name="ten"
+                        name="name"
                         placeholder="Tên"
-                        defaultValue={obj.ten}
+                        defaultValue={obj.name}
                     />
                 </label>
-                {!objName || objName === 'loaiduan' || objName === 'nhomkhachhang' ? <label>
+                {!objName || objName === 'projectType' || objName === 'customerGroup' ? <label>
                     <span>Trọng số ưu tiên</span>
                     <input
                         type="text"
-                        name="trongso"
+                        name="weight"
                         placeholder="1, 2, 3..."
-                        defaultValue={obj.trongso}
+                        defaultValue={obj.weight}
                     />
                 </label> : ''}
                 <label>
                     <span>Trạng thái</span>
                     <select
                         className="form-select"
-                        name="trangthai"
-                        defaultValue={obj.trangthai}
+                        name="status"
+                        defaultValue={obj.status}
                     >
                         <option value={'active'}>ACTIVE</option>
                         <option value={'inactive'}>INACTIVE</option>
@@ -96,8 +96,8 @@ export default function TaoMoiSua() {
                 <label>
                     <span>Mô tả</span>
                     <textarea
-                        name="mota"
-                        defaultValue={obj.mota}
+                        name="description"
+                        defaultValue={obj.description}
                         rows={6}
                     />
                 </label>

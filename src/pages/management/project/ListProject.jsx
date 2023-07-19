@@ -1,56 +1,56 @@
 import React, { useState } from 'react';
 import { Form, Link, useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
-import { getDSQuanLy } from '../../../database';
+import { getListManagement } from '../../../database';
 
 export async function loader() {
-    const data = await getDSQuanLy('duan')
+    const data = await getListManagement('project')
     return { data }
 }
 
-export default function DanhSachDuAn() {
+export default function ListProject() {
     const { data } = useLoaderData()
 
     // const data = {
     //     '0rjlnjz': {
-    //         ten: "js",
-    //         loaiduan: '',
-    //         trangthaiduan: '',
-    //         techstack: '',
-    //         trungtamphutrach: '',
-    //         thanhvienduan: '',
+    //         name: "js",
+    //         projectType: '',
+    //         projectStatus: '',
+    //         techStack: '',
+    //         center: '',
+    //         personnel: '',
     //     }
     // }
 
     const columns = [
         {
-            dataField: "ten",
+            dataField: "name",
             text: "Tên"
         },
         {
-            dataField: "loaiduan",
+            dataField: "projectType",
             text: "Loại dự án"
         },
         {
-            dataField: "trangthaiduan",
+            dataField: "projectStatus",
             text: "Trạng thái dự án"
         },
         {
-            dataField: "techstack",
+            dataField: "techStack",
             text: "Tech stack"
         },
         {
-            dataField: "trungtamphutrach",
+            dataField: "center",
             text: "Trung tâm phụ trách"
         },
         {
-            dataField: "thanhvienduan",
+            dataField: "personnel",
             text: "Thành viên trong dự án"
         },
     ];
 
     // Table
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     const urlPage = parseInt(searchParams.get('page'));
     //   console.log(urlPage);
@@ -109,7 +109,7 @@ export default function DanhSachDuAn() {
                 <div className="title">Dự án</div>
             </div>
             <div className='row justify-content-end'>
-                <Link to={`/quanly/duan/taomoi`} type="button" className="btn-tao btn btn-primary">Tạo</Link>
+                <Link to={`/quanly/project/taomoi`} type="button" className="btn-tao btn btn-primary">Tạo</Link>
             </div>
             <div className='row'>
                 <table className="danh-sach-table table table-bordered table-hover">
@@ -137,7 +137,7 @@ export default function DanhSachDuAn() {
 
                                 <td className="d-flex justify-content-evenly">
                                     <Form
-                                        action={`sua/${Object.keys(data)[startIndex + index]}`}
+                                        action={`update/${Object.keys(data)[startIndex + index]}`}
                                     >
                                         <button
                                             className="btn btn-success btn-lg"
@@ -149,7 +149,7 @@ export default function DanhSachDuAn() {
                                     </Form>
                                     <Form
                                         method="post"
-                                        action={`xoa/${Object.keys(data)[startIndex + index]}`}
+                                        action={`delete/${Object.keys(data)[startIndex + index]}`}
                                     >
                                         <button
                                             className="btn btn-danger btn-lg"

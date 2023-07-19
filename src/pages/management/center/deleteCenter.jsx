@@ -1,9 +1,9 @@
 import { redirect } from "react-router-dom";
-import { xoaQuanLy } from "../../../database";
+import { deleteManagement } from "../../../database";
 
 export async function action({ params }) {
-    await xoaQuanLy(params.id, 'ttbppb');
+    await deleteManagement(params.id, 'center');
     // console.log(params.objNames);
-    return redirect(`/quanly/ttbppb`)
+    return redirect(`/management/center`)
     // return null
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App, {
-  loader as loaderApp,
+  
 } from './App';
 import reportWebVitals from './reportWebVitals';
 import {
@@ -11,143 +11,147 @@ import {
 } from "react-router-dom";
 import ErrorPage from './error-page';
 
-// Danh muc
-import DanhSach, {
-  loader as loaderDanhSach,
-} from './routes/danh-muc/DanhSach';
-import TaoMoiSua, {
-  actionTaoMoi,
-  actionSua,
-  loaderSua,
-  loaderTaoMoi
-} from './routes/danh-muc/TaoMoiSua';
+// Category
+import List, {
+  loader as listLoader,
+} from './pages/category/List';
+import CreateUpdate, {
+  createLoader,
+  createAction,
+  updateLoader,
+  updateAction,
+} from './pages/category/CreateUpdate';
 import {
-  action as actionXoa,
-} from './routes/danh-muc/xoa'
+  action as deleteAction,
+} from './pages/category/delete'
 
-// Quan ly
-import DanhSachDuAn, {
+// Management
+import ListCenter, {
+  loader as centerLoader,
+} from './pages/management/center/ListCenter';
+import CreateUpdateCenter, {
+  createLoader as createCenterLoader,
+  createAction as createCenterAction,
+  updateLoader as updateCenterLoader,
+  updateAction as updateCenterAction,
+} from './pages/management/center/CreateUpdateCenter';
+import { action as deleteCenterAction } from "./pages/management/center/deleteCenter";
+
+import ListPersonnel, { 
+  loader as personnelLoader,
+} from "./pages/management/personnel/ListPersonnel";
+
+import ListProject, {
   loader as loaderDSDA,
-} from "./routes/quan-ly/du-an/DanhSachDuAn";
-import TaoMoiSuaDuAn from "./routes/quan-ly/du-an/TaoMoiSuaDuAn"
-import DanhSachTTBPPB, {
-  loader as loaderDSTTBPPB,
-} from './routes/quan-ly/trung-tam-bo-phan-phong-ban/DanhSachTTBPPB';
-import TaoMoiSuaTTBPPB, {
-  loaderTaoMoi as loaderTaoMoiTTBPPB,
-  actionTaoMoi as actionTaoMoiTTBPPB,
-  loaderSua as loaderSuaTTBPPB,
-  actionSua as actionSuaTTBPPB,
-} from './routes/quan-ly/trung-tam-bo-phan-phong-ban/TaoMoiSuaTTBPPB';
-import { action as actionXoaTTBPPB } from "./routes/quan-ly/trung-tam-bo-phan-phong-ban/xoaTTBPPB";
+} from "./pages/management/project/ListProject";
+import CreateUpdateProject from "./pages/management/project/CreateUpdateProject"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
-    loader: loaderApp,
     children: [
       {
         errorElement: <ErrorPage />,
         children: [
           {
             index: true,
-            element: <DanhSach />,
-            loader: loaderDanhSach,
+            element: <List />,
+            loader: listLoader,
           },
           {
-            path: "sua/:id",
-            element: <TaoMoiSua />,
-            loader: loaderSua,
-            action: actionSua,
+            path: "update/:id",
+            element: <CreateUpdate />,
+            loader: updateLoader,
+            action: updateAction,
           },
           {
-            path: "xoa/:id",
+            path: "delete/:id",
             element: <></>,
-            action: actionXoa,
+            action: deleteAction,
           },
           {
-            path: "danhmuc/:objName",
-            element: <DanhSach />,
-            loader: loaderDanhSach,
+            path: "category/:objName",
+            element: <List />,
+            loader: listLoader,
           },
           {
-            path: "danhmuc/:objName/taomoi",
-            element: <TaoMoiSua />,
-            action: actionTaoMoi,
-            loader: loaderTaoMoi,
+            path: "category/:objName/create",
+            element: <CreateUpdate />,
+            action: createAction,
+            loader: createLoader,
           },
           {
-            path: "danhmuc/:objName/sua/:id",
-            element: <TaoMoiSua />,
-            loader: loaderSua,
-            action: actionSua,
+            path: "category/:objName/update/:id",
+            element: <CreateUpdate />,
+            loader: updateLoader,
+            action: updateAction,
           },
           {
-            path: "danhmuc/:objName/xoa/:id",
+            path: "category/:objName/delete/:id",
             element: <></>,
-            action: actionXoa,
+            action: deleteAction,
           },
           {
-            path: "quanly/ttbppb",
-            element: <DanhSachTTBPPB />,
-            loader: loaderDSTTBPPB,
+            path: "management/center",
+            element: <ListCenter />,
+            loader: centerLoader,
           },
           {
-            path: "quanly/ttbppb/taomoi",
-            element: <TaoMoiSuaTTBPPB />,
-            loader: loaderTaoMoiTTBPPB,
-            action: actionTaoMoiTTBPPB,
+            path: "management/center/create",
+            element: <CreateUpdateCenter />,
+            loader: createCenterLoader,
+            action: createCenterAction,
           },
           {
-            path: "quanly/ttbppb/sua/:id",
-            element: <TaoMoiSuaTTBPPB />,
-            loader: loaderSuaTTBPPB,
-            action: actionSuaTTBPPB,
+            path: "management/center/update/:id",
+            element: <CreateUpdateCenter />,
+            loader: updateCenterLoader,
+            action: updateCenterAction,
           },
           {
-            path: "quanly/ttbppb/xoa/:id",
+            path: "management/center/delete/:id",
             element: <></>,
-            action: actionXoaTTBPPB,
+            action: deleteCenterAction,
           },
           {
-            path: "quanly/nhansu",
-            element: <DanhSachDuAn />,
+            path: "management/personnel",
+            element: <ListPersonnel />,
+            loader: personnelLoader,
+          },
+          {
+            path: "management/personnel/create",
+            element: <CreateUpdateProject />,
+
+          },
+          {
+            path: "management/personnel/update/:id",
+            element: <></>,
+
+          },
+          {
+            path: "management/personnel/delete/:id",
+            element: <></>,
+
+          },
+          {
+            path: "management/project",
+            element: <ListProject />,
             loader: loaderDSDA,
           },
           {
-            path: "quanly/nhansu/taomoi",
-            element: <TaoMoiSuaDuAn />,
+            path: "management/project/create",
+            element: <CreateUpdateProject />,
 
           },
           {
-            path: "quanly/nhansu/sua/:id",
+            path: "management/project/update/:id",
             element: <></>,
 
           },
           {
-            path: "quanly/nhansu/xoa/:id",
-            element: <></>,
-
-          },
-          {
-            path: "quanly/duan",
-            element: <DanhSachDuAn />,
-            loader: loaderDSDA,
-          },
-          {
-            path: "quanly/duan/taomoi",
-            element: <TaoMoiSuaDuAn />,
-
-          },
-          {
-            path: "quanly/duan/sua/:id",
-            element: <></>,
-
-          },
-          {
-            path: "quanly/duan/xoa/:id",
+            path: "management/project/delete/:id",
             element: <></>,
 
           },
