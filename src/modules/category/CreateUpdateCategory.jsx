@@ -3,14 +3,14 @@ import { createCategory, updateCategory, getCategory } from "../../database";
 
 export async function createAction({ request, params }) {
     const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const newObj = Object.fromEntries(formData); // push formdata into an object
     await createCategory(newObj, params.objName);
     return redirect(`/category/${params.objName}`);
 }
 
 export async function updateAction({ request, params }) {
     const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const newObj = Object.fromEntries(formData); // push formdata into an object
     await updateCategory(params.id, newObj, params.objName ? params.objName : 'projectType')
     return redirect(`/category/${params.objName ? params.objName : 'projectType'}`);
 }
@@ -33,7 +33,7 @@ export async function updateLoader({ params }) {
     return { obj, objName };
 }
 
-export default function CreateUpdate() {
+export default function CreateUpdateCategory() {
     const navigate = useNavigate();
     const { obj, objName } = useLoaderData()
     // console.log(obj);

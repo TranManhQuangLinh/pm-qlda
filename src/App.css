@@ -30,13 +30,13 @@
     text-align: center;
 }
 
-/* DanhSach */
+/* List */
 .title {
     font-size: 1.5rem;
     margin-top: 1rem;
 }
 
-.btn-tao {
+.btn-create {
     font-size: 1.5rem;
     width: auto;
 }
@@ -64,7 +64,7 @@
     text-align: center;
 }
 
-/* TaoMoiSua */
+/* CreateUpdate */
 #contact-form {
     margin: 100px auto 0 auto;
 }

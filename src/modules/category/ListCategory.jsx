@@ -11,7 +11,7 @@ export async function loader({ params }) {
     return { data, objName }
 }
 
-export default function List() {
+export default function ListCategory() {
     const { data, objName } = useLoaderData()
     let title
     switch (objName) {
@@ -92,7 +92,7 @@ export default function List() {
                 <div className="title">{title}</div>
             </div>
             <div className='row justify-content-end'>
-                <Link to={`/category/${objName ? objName : 'projectType'}/create`} type="button" className="btn-tao btn btn-primary">Tạo</Link>
+                <Link to={`/category/${objName ? objName : 'projectType'}/create`} type="button" className="btn-create btn btn-primary">Tạo</Link>
             </div>
             <div className='row'>
                 <Table data={data} columns={columns} />

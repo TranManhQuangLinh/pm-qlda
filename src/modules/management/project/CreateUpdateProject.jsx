@@ -3,7 +3,7 @@ import { createManagement, getListCategory, getListManagement, getManagement, up
 
 export async function createAction({ request }) {
     const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const newObj = Object.fromEntries(formData); // push formdata into an object
     console.log(newObj);
     newObj.techStack = formData.getAll("techStack");
     newObj.project = formData.getAll("project");
@@ -16,7 +16,7 @@ export async function createAction({ request }) {
 
 export async function updateAction({ request, params }) {
     const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const newObj = Object.fromEntries(formData); // push formdata into an object
     newObj.techStack = formData.getAll("techStack");
     newObj.project = formData.getAll("project");
     newObj.personnel = formData.getAll("personnel");

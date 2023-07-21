@@ -109,7 +109,7 @@ export default function ListProject() {
                 <div className="title">Dự án</div>
             </div>
             <div className='row justify-content-end'>
-                <Link to={`/quanly/project/taomoi`} type="button" className="btn-tao btn btn-primary">Tạo</Link>
+                <Link to={`/quanly/project/taomoi`} type="button" className="btn-create btn btn-primary">Tạo</Link>
             </div>
             <div className='row'>
                 <table className="danh-sach-table table table-bordered table-hover">

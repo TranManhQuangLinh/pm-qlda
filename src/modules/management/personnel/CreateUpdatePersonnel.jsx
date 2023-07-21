@@ -3,20 +3,20 @@ import { createManagement, getListCategory, getListManagement, getManagement, up
 
 export async function createAction({ request }) {
     const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const newObj = Object.fromEntries(formData); // push formdata into an object
     console.log(newObj);
     newObj.techStack = formData.getAll("techStack");
     newObj.project = formData.getAll("project");
     newObj.personnel = formData.getAll("personnel");
     console.log(newObj);
-    await createManagement(newObj, 'center');
+    await createManagement(newObj, 'personnel');
     return redirect(`/management/center`);
     // return null
 }
 
 export async function updateAction({ request, params }) {
     const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // đẩy formdata vào 1 đối tượng
+    const newObj = Object.fromEntries(formData); // push formdata into an object
     newObj.techStack = formData.getAll("techStack");
     newObj.project = formData.getAll("project");
     newObj.personnel = formData.getAll("personnel");
@@ -47,10 +47,10 @@ export async function updateLoader({ params }) {
     return { obj, techStack, project, personnel }
 }
 
-export default function CreateUpdateCenter() {
+export default function CreateUpdatePersonnel() {
     const navigate = useNavigate();
     const { obj, techStack, project, personnel } = useLoaderData()
-    console.log(obj);
+    // console.log(obj);
     // console.log(techStack);
     // console.log(project);
     // console.log(personnel);
@@ -89,7 +89,7 @@ export default function CreateUpdateCenter() {
                         <div>Mô tả:</div>
                         <div>{item.description}</div>
                     </div>
-                    <div className="me-3">
+                    <div className="">
                         <div>Trạng thái:</div>
                         <div className={item.status}>{item.status.toUpperCase()}</div>
                     </div>
@@ -119,7 +119,7 @@ export default function CreateUpdateCenter() {
                         <div>Mô tả:</div>
                         <div>{item.description}</div>
                     </div>
-                    <div className="me-3">
+                    <div className="">
                         <div>Trạng thái:</div>
                         <div className={item.status}>{item.status.toUpperCase()}</div>
                     </div>
@@ -148,7 +148,7 @@ export default function CreateUpdateCenter() {
                         <div>Mô tả:</div>
                         <div>{item.description}</div>
                     </div>
-                    <div className="me-3">
+                    <div className="">
                         <div>Trạng thái:</div>
                         <div className={item.status}>{item.status.toUpperCase()}</div>
                     </div>

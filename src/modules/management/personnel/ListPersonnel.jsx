@@ -1,67 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Form,
   Link,
   useLoaderData,
   useNavigate,
   useSearchParams,
-} from 'react-router-dom';
-import { getCategory, getListManagement } from '../../../database';
+} from "react-router-dom";
+import { getCategory, getListManagement } from "../../../database";
+import ListTechStack from "../../../components/ListTechStack";
 
 export async function loader() {
-  const data = await getListManagement('center');
+  const data = await getListManagement("personnel");
   // console.log(data);
 
-  // get các đối tượng techStack từ list id
+  // get techStack object from list id
   await Promise.all(
-    Object.entries(data).map(async ([, item]) => {
+    Object.entries(data).map(async ([key, item]) => {
       if (item.techStack && Array.isArray(item.techStack)) {
         item.techStack = await Promise.all(
-          item.techStack.map((i) => getCategory(i, 'techStack')),
+          item.techStack.map((i) => getCategory(i, "techStack"))
         );
       } else {
         item.techStack = []; // Provide a default empty array
       }
       return item;
-    }),
+    })
   );
 
   return { data };
 }
 
-export default function ListCenter() {
+export default function ListPersonnel() {
   const { data } = useLoaderData();
   // console.log(data);
   // const data = {
   //     '0rjlnjz': {
   //         name: "js",
+  // birthday: '',
+  // phone: '',
   //         description: '',
   //         techStack: ['-N_DNueEa36ueEz5LTLq', '-N_DNv--S-qUPuzq35O9'],
   //         project: '',
-  //         personnel: '',
   //     }
   // }
 
   const columns = [
     {
-      dataField: 'name',
-      text: 'Tên',
+      dataField: "name",
+      text: "Tên",
     },
     {
-      dataField: 'description',
-      text: 'Chức năng, nhiệm vụ',
+      dataField: "birthday",
+      text: "Ngày sinh",
     },
     {
-      dataField: 'techStack',
-      text: 'Tech stack',
+      dataField: "phone",
+      text: "Số điện thoại",
     },
     {
-      dataField: 'project',
-      text: 'Dự án',
+      dataField: "description",
+      text: "Chức năng, nhiệm vụ",
     },
     {
-      dataField: 'personnel',
-      text: 'Nhân viên',
+      dataField: "techStack",
+      text: "Tech stack",
+    },
+    {
+      dataField: "project",
+      text: "Dự án",
     },
   ];
 
@@ -69,7 +75,7 @@ export default function ListCenter() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams] = useSearchParams();
 
-  const urlPage = parseInt(searchParams.get('page'));
+  const urlPage = parseInt(searchParams.get("page"));
   //   console.log(urlPage);
 
   if (!isNaN(urlPage) && urlPage !== currentPage) {
@@ -91,7 +97,7 @@ export default function ListCenter() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    searchParams.set('page', page.toString());
+    searchParams.set("page", page.toString());
 
     const isFirstSearch = isNaN(urlPage);
     navigate(`?${searchParams.toString()}`, { replace: !isFirstSearch });
@@ -109,12 +115,12 @@ export default function ListCenter() {
       navigate(`?page=${newPage}`);
     } else {
       setCurrentPage(1);
-      navigate('?page=1');
+      navigate(`?page=1`);
     }
   };
 
   const handleInputPageClick = (e) => {
-    const elemLen = e.target.value.length;
+    var elemLen = e.target.value.length;
     e.target.selectionStart = 0;
     e.target.selectionEnd = elemLen;
     e.target.focus();
@@ -123,13 +129,13 @@ export default function ListCenter() {
   return (
     <div className="container">
       <div className="row">
-        <div className="title">Trung tâm, bộ phận, phòng ban</div>
+        <div className="title">Nhân sự</div>
       </div>
       <div className="row justify-content-end">
         <Link
-          to="/management/center/create"
+          to={`/management/personnel/create`}
           type="button"
-          className="btn-tao btn btn-primary"
+          className="btn-create btn btn-primary"
         >
           Tạo
         </Link>
@@ -142,7 +148,7 @@ export default function ListCenter() {
               {columns.map((column, index) => (
                 <th key={index}>{column.text}</th>
               ))}
-              <th />
+              <th></th>
             </tr>
           </thead>
           <tbody className="align-middle">
@@ -151,50 +157,11 @@ export default function ListCenter() {
                 <td>{startIndex + index + 1}</td>
 
                 {columns.map((column, columnIndex) => {
-                  if (column.dataField === 'techStack') {
-                    const techStack = item[column.dataField];
-
-                    return (
-                      <td className="dropdown">
-                        <button
-                          type="button"
-                          className={`btn btn-primary dropdown-toggle ${
-                            Object.entries(techStack).length === 0
-                              ? 'disabled'
-                              : ''
-                          }`}
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          data-bs-auto-close="outside"
-                        >
-                          {Object.entries(techStack).length === 0
-                            ? 'Không có Tech Stack'
-                            : 'Tech Stack'}
-                        </button>
-                        <div className="dropdown-menu">
-                          {Object.entries(techStack).map(([key, item]) => (
-                            <div key={key} className="d-flex mb-3 ms-3 me-3">
-                              <div className="me-3">
-                                <div>Tên:</div>
-                                <div>{item.name}</div>
-                              </div>
-                              <div className="me-3">
-                                <div>Mô tả:</div>
-                                <div>{item.description}</div>
-                              </div>
-                              <div className="me-3">
-                                <div>Trạng thái:</div>
-                                <div className={item.description}>
-                                  {item.description.toUpperCase()}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                    );
+                  if (column.dataField === "techStack") {
+                    return <ListTechStack techStack={item[column.dataField]} />
+                  } else {
+                    return <td key={columnIndex}>{item[column.dataField]}</td>;
                   }
-                  return <td key={columnIndex}>{item[column.dataField]}</td>;
                 })}
 
                 <td className="d-flex justify-content-evenly">
