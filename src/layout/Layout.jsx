@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { Link, Outlet, useLocation } from 'react-router-dom';
-
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function Layout() {
   const [objName, setObjName] = useState("projectType");
@@ -10,10 +9,36 @@ export default function Layout() {
 
   useEffect(() => {
     const paramsObjName = location.pathname.split("/")[2];
-    if (paramsObjName && paramsObjName !== objName && location.pathname.split("/")[1] !== "update") {
+    if (
+      paramsObjName &&
+      paramsObjName !== objName &&
+      location.pathname.split("/")[1] !== "update" &&
+      location.pathname.split("/")[1] !== "detail"
+    ) {
       setObjName(paramsObjName);
     }
-  }, [location.pathname, objName]);
+  }, []);
+
+  const categoryItems = [
+    { name: "projectType", label: "Loại dự án" },
+    { name: "projectStatus", label: "Trạng thái dự án" },
+    { name: "techStack", label: "Tech stack" },
+    { name: "customerGroup", label: "Nhóm khách hàng" },
+    // Add more category items as needed
+  ];
+
+  const managementItems = [
+    { name: "center", label: "Trung tâm, bộ phận, phòng ban" },
+    { name: "personnel", label: "Nhân sự" },
+    { name: "project", label: "Dự án" },
+    // Add more management items as needed
+  ];
+
+  const reportItems = [
+    { name: "numberOfProjects", label: "Số lượng dự án" },
+    { name: "numberOfPersonnel", label: "Số lượng nhân sự" },
+    // Add more report items as needed
+  ];
 
   return (
     <div className="container-fluid">
@@ -38,54 +63,21 @@ export default function Layout() {
                 className="accordion-collapse collapse show"
               >
                 <div className="accordion-body">
-                  <div
-                    className={`sidebar-item ${
-                      objName === "projectType" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"category/projectType"}
-                      onClick={() => setObjName("projectType")}
+                  {categoryItems.map((item) => (
+                    <div
+                      key={item.name}
+                      className={`sidebar-item ${
+                        objName === item.name ? "selected" : ""
+                      }`}
                     >
-                      Loại dự án
-                    </Link>
-                  </div>
-                  <div
-                    className={`sidebar-item ${
-                      objName === "projectStatus" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"category/projectStatus"}
-                      onClick={() => setObjName("projectStatus")}
-                    >
-                      Trạng thái dự án
-                    </Link>
-                  </div>
-                  <div
-                    className={`sidebar-item ${
-                      objName === "techStack" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"category/techStack"}
-                      onClick={() => setObjName("techStack")}
-                    >
-                      Tech stack
-                    </Link>
-                  </div>
-                  <div
-                    className={`sidebar-item ${
-                      objName === "customerGroup" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"category/customerGroup"}
-                      onClick={() => setObjName("customerGroup")}
-                    >
-                      Nhóm khách hàng
-                    </Link>
-                  </div>
+                      <Link
+                        to={`category/${item.name}`}
+                        onClick={() => setObjName(item.name)}
+                      >
+                        {item.label}
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -107,42 +99,21 @@ export default function Layout() {
                 className="accordion-collapse collapse show"
               >
                 <div className="accordion-body">
-                  <div
-                    className={`sidebar-item ${
-                      objName === "center" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"management/center"}
-                      onClick={() => setObjName("center")}
+                  {managementItems.map((item) => (
+                    <div
+                      key={item.name}
+                      className={`sidebar-item ${
+                        objName === item.name ? "selected" : ""
+                      }`}
                     >
-                      Trung tâm, bộ phận, phòng ban
-                    </Link>
-                  </div>
-                  <div
-                    className={`sidebar-item ${
-                      objName === "personnel" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"management/personnel"}
-                      onClick={() => setObjName("personnel")}
-                    >
-                      Nhân sự
-                    </Link>
-                  </div>
-                  <div
-                    className={`sidebar-item ${
-                      objName === "project" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"management/project"}
-                      onClick={() => setObjName("project")}
-                    >
-                      Dự án
-                    </Link>
-                  </div>
+                      <Link
+                        to={`management/${item.name}`}
+                        onClick={() => setObjName(item.name)}
+                      >
+                        {item.label}
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -164,30 +135,21 @@ export default function Layout() {
                 className="accordion-collapse collapse show"
               >
                 <div className="accordion-body">
-                  <div
-                    className={`sidebar-item ${
-                      objName === "numberOfProjects" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"report/numberOfProjects"}
-                      onClick={() => setObjName("numberOfProjects")}
+                  {reportItems.map((item) => (
+                    <div
+                      key={item.name}
+                      className={`sidebar-item ${
+                        objName === item.name ? "selected" : ""
+                      }`}
                     >
-                      Số lượng dự án
-                    </Link>
-                  </div>
-                  <div
-                    className={`sidebar-item ${
-                      objName === "numberOfPersonnel" ? "selected" : ""
-                    }`}
-                  >
-                    <Link
-                      to={"report/numberOfPersonnel"}
-                      onClick={() => setObjName("numberOfPersonnel")}
-                    >
-                      Số lượng nhân sự
-                    </Link>
-                  </div>
+                      <Link
+                        to={`report/${item.name}`}
+                        onClick={() => setObjName(item.name)}
+                      >
+                        {item.label}
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

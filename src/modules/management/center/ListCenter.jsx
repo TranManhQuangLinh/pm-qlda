@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Form,
   Link,
   useLoaderData,
   useNavigate,
   useSearchParams,
-} from 'react-router-dom';
-import { getCategory, getListManagement } from '../../../database';
+} from "react-router-dom";
+import { getListManagement } from "../../../database";
 
 export async function loader() {
-  const data = await getListManagement('center');
+  const data = await getListManagement("center");
   // console.log(data);
 
-  // get techStack object from list id
-  await Promise.all(
-    Object.entries(data).map(async ([, item]) => {
-      if (item.techStack && Array.isArray(item.techStack)) {
-        item.techStack = await Promise.all(
-          item.techStack.map((i) => getCategory(i, 'techStack')),
-        );
-      } else {
-        item.techStack = []; // Provide a default empty array
-      }
-      return item;
-    }),
-  );
+  // // get techStack object from list id
+  // await Promise.all(
+  //   Object.entries(data).map(async ([, item]) => {
+  //     if (item.techStack && Array.isArray(item.techStack)) {
+  //       item.techStack = await Promise.all(
+  //         item.techStack.map((i) => getCategory(i, 'techStack')),
+  //       );
+  //     } else {
+  //       item.techStack = []; // Provide a default empty array
+  //     }
+  //     return item;
+  //   }),
+  // );
 
   return { data };
 }
@@ -44,24 +44,12 @@ export default function ListCenter() {
 
   const columns = [
     {
-      dataField: 'name',
-      text: 'Tên',
+      dataField: "name",
+      text: "Tên",
     },
     {
-      dataField: 'description',
-      text: 'Chức năng, nhiệm vụ',
-    },
-    {
-      dataField: 'techStack',
-      text: 'Tech stack',
-    },
-    {
-      dataField: 'project',
-      text: 'Dự án',
-    },
-    {
-      dataField: 'personnel',
-      text: 'Nhân viên',
+      dataField: "description",
+      text: "Chức năng, nhiệm vụ",
     },
   ];
 
@@ -69,7 +57,7 @@ export default function ListCenter() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams] = useSearchParams();
 
-  const urlPage = parseInt(searchParams.get('page'));
+  const urlPage = parseInt(searchParams.get("page"));
   //   console.log(urlPage);
 
   if (!isNaN(urlPage) && urlPage !== currentPage) {
@@ -91,7 +79,7 @@ export default function ListCenter() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    searchParams.set('page', page.toString());
+    searchParams.set("page", page.toString());
 
     const isFirstSearch = isNaN(urlPage);
     navigate(`?${searchParams.toString()}`, { replace: !isFirstSearch });
@@ -109,7 +97,7 @@ export default function ListCenter() {
       navigate(`?page=${newPage}`);
     } else {
       setCurrentPage(1);
-      navigate('?page=1');
+      navigate("?page=1");
     }
   };
 
@@ -151,54 +139,20 @@ export default function ListCenter() {
                 <td>{startIndex + index + 1}</td>
 
                 {columns.map((column, columnIndex) => {
-                  if (column.dataField === 'techStack') {
-                    const techStack = item[column.dataField];
-
-                    return (
-                      <td className="dropdown" key={columnIndex}>
-                        <button
-                          type="button"
-                          className={`btn btn-primary dropdown-toggle ${
-                            Object.entries(techStack).length === 0
-                              ? 'disabled'
-                              : ''
-                          }`}
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          data-bs-auto-close="outside"
-                        >
-                          {Object.entries(techStack).length === 0
-                            ? 'Không có Tech Stack'
-                            : 'Tech Stack'}
-                        </button>
-                        <div className="dropdown-menu">
-                          {Object.entries(techStack).map(([key, item]) => (
-                            <div key={key} className="d-flex mb-3 ms-3 me-3">
-                              <div className="me-3">
-                                <div>Tên:</div>
-                                <div>{item.name}</div>
-                              </div>
-                              <div className="me-3">
-                                <div>Mô tả:</div>
-                                <div>{item.description}</div>
-                              </div>
-                              <div className="me-3">
-                                <div>Trạng thái:</div>
-                                <div className={item.description}>
-                                  {item.description.toUpperCase()}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                    );
-                  }
                   return <td key={columnIndex}>{item[column.dataField]}</td>;
                 })}
 
                 <td className="d-flex justify-content-evenly">
-                  <Form action={`update/${Object.keys(data)[startIndex + index]}`}>
+                  <Form
+                    action={`detail/${Object.keys(data)[startIndex + index]}`}
+                  >
+                    <button className="btn btn-info btn-lg" type="submit">
+                      Chi tiết
+                    </button>
+                  </Form>
+                  <Form
+                    action={`update/${Object.keys(data)[startIndex + index]}`}
+                  >
                     <button className="btn btn-success btn-lg" type="submit">
                       Sửa
                     </button>
