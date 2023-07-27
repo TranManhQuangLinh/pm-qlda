@@ -1,30 +1,7 @@
 import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
 import { createManagement, getListCategory, getListManagement, getManagement, updateManagement } from "../../../database";
-import ListTechStack from "../../../components/ListTechStack";
-
-export async function createAction({ request }) {
-    const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // push formdata into an object
-    console.log(newObj);
-    newObj.techStack = formData.getAll("techStack");
-    newObj.project = formData.getAll("project");
-    newObj.personnel = formData.getAll("personnel");
-    console.log(newObj);
-    await createManagement(newObj, 'center');
-    return redirect(`/management/center`);
-    // return null
-}
-
-export async function updateAction({ request, params }) {
-    const formData = await request.formData();
-    const newObj = Object.fromEntries(formData); // push formdata into an object
-    newObj.techStack = formData.getAll("techStack");
-    newObj.project = formData.getAll("project");
-    newObj.personnel = formData.getAll("personnel");
-    console.log(newObj);
-    await updateManagement(params.id, newObj, 'center')
-    return redirect(`/management/center`);
-}
+import TechStackCardList from "../../../components/TechStackCardList";
+import PersonnelCardList from "../../../components/PersonnelCardList";
 
 export async function createLoader() {
     const obj = {}
@@ -32,6 +9,18 @@ export async function createLoader() {
     const project = await getListManagement('project')
     const personnel = await getListManagement('personnel')
     return { obj, techStack, project, personnel }
+}
+
+export async function createAction({ request }) {
+    const formData = await request.formData();
+    const newObj = Object.fromEntries(formData); // push formdata into an object
+    newObj.techStack = formData.getAll("techStack");
+    newObj.project = formData.getAll("project");
+    newObj.personnel = formData.getAll("personnel");
+    console.log(newObj);
+    await createManagement(newObj, 'center');
+    return redirect(`/management/center`);
+    // return null
 }
 
 export async function updateLoader({ params }) {
@@ -46,6 +35,17 @@ export async function updateLoader({ params }) {
     const project = await getListManagement('project')
     const personnel = await getListManagement('personnel')
     return { obj, techStack, project, personnel }
+}
+
+export async function updateAction({ request, params }) {
+    const formData = await request.formData();
+    const newObj = Object.fromEntries(formData); // push formdata into an object
+    newObj.techStack = formData.getAll("techStack");
+    newObj.project = formData.getAll("project");
+    newObj.personnel = formData.getAll("personnel");
+    console.log(newObj);
+    await updateManagement(params.id, newObj, 'center')
+    return redirect(`/management/center`);
 }
 
 export default function CreateUpdateCenter() {
@@ -69,64 +69,6 @@ export default function CreateUpdateCenter() {
     //         status: "active",
     //     }
     // }
-
-    const projectOptions = Object.entries(project).map(([key, item]) => {
-        return (
-            <div key={key} className="form-check mb-3 ms-3 me-3">
-                <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id={key}
-                    name="project"
-                    value={key}
-                    defaultChecked={obj.project.includes(key)}
-                />
-                <label className={`form-check-label ms-3`} htmlFor={key}>
-                    <div className="me-3">
-                        <div>Tên:</div>
-                        <div>{item.name}</div>
-                    </div>
-                    <div className="me-3">
-                        <div>Mô tả:</div>
-                        <div>{item.description}</div>
-                    </div>
-                    <div className="me-3">
-                        <div>Trạng thái:</div>
-                        <div className={item.status}>{item.status.toUpperCase()}</div>
-                    </div>
-                </label>
-            </div>
-        )
-    });
-
-    const personnelOptions = Object.entries(personnel).map(([key, item]) => {
-        return (
-            <div key={key} className="form-check mb-3 ms-3 me-3">
-                <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id={key}
-                    name="personnel"
-                    value={key}
-                    defaultChecked={obj.personnel.includes(key)}
-                />
-                <label className={`form-check-label ms-3`} htmlFor={key}>
-                    <div className="me-3">
-                        <div>Tên:</div>
-                        <div>{item.name}</div>
-                    </div>
-                    <div className="me-3">
-                        <div>Mô tả:</div>
-                        <div>{item.description}</div>
-                    </div>
-                    <div className="me-3">
-                        <div>Trạng thái:</div>
-                        <div className={item.status}>{item.status.toUpperCase()}</div>
-                    </div>
-                </label>
-            </div>
-        )
-    });
 
     return (
         <div className='container'>
@@ -153,29 +95,15 @@ export default function CreateUpdateCenter() {
                 </label>
                 <label>
                     <span>Tech stack</span>
-                    <ListTechStack techStack={techStack} isCheckbox={true} obj={obj} />
+                    <TechStackCardList techStack={techStack} isCheckbox={true} obj={obj} />
                 </label>
                 <label>
                     <span>Dự án</span>
-                    <div className="dropdown">
-                        <button type="button" className={`btn btn-primary dropdown-toggle ${Object.entries(project).length === 0 ? 'disabled' : ''}`} data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                            {Object.entries(project).length === 0 ? 'Không có Dự án' : 'Dự án'}
-                        </button>
-                        <div className="dropdown-menu">
-                            {projectOptions}
-                        </div>
-                    </div>
+                    
                 </label>
                 <label>
                     <span>Nhân viên</span>
-                    <div className="dropdown">
-                        <button type="button" className={`btn btn-primary dropdown-toggle ${Object.entries(personnel).length === 0 ? 'disabled' : ''}`} data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                            {Object.entries(personnel).length === 0 ? 'Không có Nhân viên' : 'Nhân viên'}
-                        </button>
-                        <div className="dropdown-menu">
-                            {personnelOptions}
-                        </div>
-                    </div>
+                    <PersonnelCardList personnel={personnel} isCheckbox={true} obj={obj} />
                 </label>
                 <p>
                     <button type="submit">Save</button>

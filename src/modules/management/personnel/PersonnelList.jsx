@@ -6,31 +6,15 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { getCategory, getListManagement } from "../../../database";
-import ListTechStack from "../../../components/ListTechStack";
+import { getListManagement } from "../../../database";
 
 export async function loader() {
   const data = await getListManagement("personnel");
   // console.log(data);
-
-  // get techStack object from list id
-  await Promise.all(
-    Object.entries(data).map(async ([key, item]) => {
-      if (item.techStack && Array.isArray(item.techStack)) {
-        item.techStack = await Promise.all(
-          item.techStack.map((i) => getCategory(i, "techStack"))
-        );
-      } else {
-        item.techStack = []; // Provide a default empty array
-      }
-      return item;
-    })
-  );
-
   return { data };
 }
 
-export default function ListPersonnel() {
+export default function PersonnelList() {
   const { data } = useLoaderData();
   // console.log(data);
   // const data = {
@@ -50,24 +34,12 @@ export default function ListPersonnel() {
       text: "Tên",
     },
     {
-      dataField: "birthday",
+      dataField: "dateOfBirth",
       text: "Ngày sinh",
     },
     {
       dataField: "phone",
       text: "Số điện thoại",
-    },
-    {
-      dataField: "description",
-      text: "Chức năng, nhiệm vụ",
-    },
-    {
-      dataField: "techStack",
-      text: "Tech stack",
-    },
-    {
-      dataField: "project",
-      text: "Dự án",
     },
   ];
 
@@ -155,17 +127,20 @@ export default function ListPersonnel() {
             {currentData.map((item, index) => (
               <tr key={index}>
                 <td>{startIndex + index + 1}</td>
-
                 {columns.map((column, columnIndex) => {
-                  if (column.dataField === "techStack") {
-                    return <ListTechStack techStack={item[column.dataField]} />
-                  } else {
-                    return <td key={columnIndex}>{item[column.dataField]}</td>;
-                  }
+                  return <td key={columnIndex}>{item[column.dataField]}</td>;
                 })}
-
                 <td className="d-flex justify-content-evenly">
-                  <Form action={`update/${Object.keys(data)[startIndex + index]}`}>
+                  <Form
+                    action={`detail/${Object.keys(data)[startIndex + index]}`}
+                  >
+                    <button className="btn btn-info btn-lg" type="submit">
+                      Chi tiết
+                    </button>
+                  </Form>
+                  <Form
+                    action={`update/${Object.keys(data)[startIndex + index]}`}
+                  >
                     <button className="btn btn-success btn-lg" type="submit">
                       Sửa
                     </button>

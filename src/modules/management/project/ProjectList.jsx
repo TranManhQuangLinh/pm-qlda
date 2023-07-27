@@ -7,7 +7,7 @@ export async function loader() {
     return { data }
 }
 
-export default function ListProject() {
+export default function ProjectList() {
     const { data } = useLoaderData()
 
     // const data = {

@@ -1,87 +1,103 @@
 /* Sidebar */
 .accordion-button:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
 
-.sidebar-item>a {
-    /* cursor: pointer; */
-    text-decoration: none;
+.sidebar-item > a {
+  /* cursor: pointer; */
+  text-decoration: none;
 }
 
-.sidebar-item:hover>a {
-    color: coral;
+.sidebar-item:hover > a {
+  color: coral;
 }
 
 .accordion-button {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
-.selected>a {
-    color: coral;
-    font-weight: bold;
+.selected > a {
+  color: coral;
+  font-weight: bold;
 }
-
 
 /* error page */
-#error-page>p>i {
-    display: block;
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
+#error-page > p > i {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 /* List */
 .title {
-    font-size: 1.5rem;
-    margin-top: 1rem;
+  font-size: 1.5rem;
+  margin-top: 1rem;
 }
 
 .btn-create {
-    font-size: 1.5rem;
-    width: auto;
+  font-size: 1.5rem;
+  width: auto;
 }
 
 .list-table {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
-.table>tbody>tr {
-    cursor: pointer;
+.table > tbody > tr {
+  cursor: pointer;
 }
 
 .active {
-    color: #0DA738 !important;
+  color: #0da738 !important;
 }
 
 .inactive {
-    color: #CB1414 !important;
+  color: #cb1414 !important;
 }
 
 .page-number {
-    width: 50px;
-    margin: 0 20px;
-    padding: 0.5rem 0.5rem;
-    text-align: center;
+  width: 50px;
+  margin: 0 20px;
+  padding: 0.5rem 0.5rem;
+  text-align: center;
 }
 
 /* CreateUpdate */
 #contact-form {
-    margin: 100px auto 0 auto;
+  margin: 50px auto 50px auto;
 }
 
 .form-select {
-    width: auto;
+  width: auto;
 }
 
 .form-select:hover {
-    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 .form-select:focus {
-    border-color: black;
-    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+  border-color: black;
+  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 .dropdown-card-list {
-    min-width: 60vw;
+  width: 60vw;
+  max-width: 650px;
+}
+
+.form-check {
+  padding-left: 0;
+}
+
+.form-check-input {
+  margin-left: 0 !important;
+  margin-right: 1rem;
+}
+
+/* Card List */
+.undefined-infomation {
+  font-size: 1rem;
+  font-weight: 300;
+  font-style: italic;
 }

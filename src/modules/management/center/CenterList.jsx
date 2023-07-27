@@ -29,7 +29,7 @@ export async function loader() {
   return { data };
 }
 
-export default function ListCenter() {
+export default function CenterList() {
   const { data } = useLoaderData();
   // console.log(data);
   // const data = {

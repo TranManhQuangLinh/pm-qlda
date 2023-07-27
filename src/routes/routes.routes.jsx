@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "../pages/error-page";
 
 // Category
-import ListCategoryPage from "../pages/category/ListCategoryPage";
+import ListCategoryPage from "../pages/category/CategoryListPage";
 import { loader as listCategoryLoader } from "../modules/category/ListCategory";
 
 import CategoryDetailPage from "../pages/category/CategoryDetailPage";
@@ -18,8 +18,9 @@ import {
 import { action as deleteCategoryAction } from "../modules/category/deleteCategory";
 
 // Management
-import ListCenterPage from "../pages/management/center/ListCenterPage";
-import { loader as centerLoader } from "../modules/management/center/ListCenter";
+// Center
+import CenterListPage from "../pages/management/center/CenterListPage";
+import { loader as centerLoader } from "../modules/management/center/CenterList";
 
 import CenterDetailPage from "../pages/management/center/CenterDetailPage";
 import { loader as centerDetailLoader } from "../modules/management/center/CenterDetail"
@@ -34,11 +35,27 @@ import {
 
 import { action as deleteCenterAction } from "../modules/management/center/deleteCenter";
 
-import ListPersonnelPage from "../pages/management/personnel/ListPersonnelPage";
-import { loader as personnelLoader } from "../modules/management/personnel/ListPersonnel";
+// Personnel
+import PersonnelListPage from "../pages/management/personnel/PersonnelListPage";
+import { loader as personnelLoader } from "../modules/management/personnel/PersonnelList";
 
-import ListProjectPage from "../pages/management/project/ListProjectPage";
-import { loader as projectLoader } from "../modules/management/project/ListProject";
+
+import PersonnelDetailPage from "../pages/management/personnel/PersonnelDetailPage";
+import { loader as personnelDetailLoader } from "../modules/management/personnel/PersonnelDetail"
+
+import CreateUpdatePersonnelPage from "../pages/management/personnel/CreateUpdatePersonnelPage";
+import {
+  createLoader as createPersonnelLoader,
+  createAction as createPersonnelAction,
+  updateLoader as updatePersonnelLoader,
+  updateAction as updatePersonnelAction,
+} from "../modules/management/personnel/CreateUpdatePersonnel"
+
+import { action as deletePersonnelAction } from "../modules/management/personnel/deletePersonnel"
+
+// Project
+import ProjectListPage from "../pages/management/project/ProjectListPage";
+import { loader as projectLoader } from "../modules/management/project/ProjectList";
 
 import CreateUpdateProjectPage from "../pages/management/project/CreateUpdateProjectPage";
 
@@ -60,6 +77,7 @@ import {
   PATH_PERSONNEL,
   PATH_PERSONNEL_CREATE,
   PATH_PERSONNEL_DELETE,
+  PATH_PERSONNEL_DETAIL,
   PATH_PERSONNEL_UPDATE,
   PATH_PROJECT,
   PATH_PROJECT_CREATE,
@@ -126,7 +144,7 @@ export const router = createBrowserRouter([
           },
           {
             path: PATH_CENTER,
-            element: <ListCenterPage />,
+            element: <CenterListPage />,
             loader: centerLoader,
           },
           {
@@ -153,24 +171,34 @@ export const router = createBrowserRouter([
           },
           {
             path: PATH_PERSONNEL,
-            element: <ListPersonnelPage />,
+            element: <PersonnelListPage />,
             loader: personnelLoader,
           },
           {
             path: PATH_PERSONNEL_CREATE,
-            element: <CreateUpdateProjectPage />,
+            element: <CreateUpdatePersonnelPage />,
+            loader: createPersonnelLoader,
+            action: createPersonnelAction,
+          },
+          {
+            path: PATH_PERSONNEL_DETAIL,
+            element: <PersonnelDetailPage />,
+            loader: personnelDetailLoader,
           },
           {
             path: PATH_PERSONNEL_UPDATE,
-            element: <></>,
+            element: <CreateUpdatePersonnelPage />,
+            loader: updatePersonnelLoader,
+            action: updatePersonnelAction,
           },
           {
             path: PATH_PERSONNEL_DELETE,
             element: <></>,
+            action: deletePersonnelAction,
           },
           {
             path: PATH_PROJECT,
-            element: <ListProjectPage />,
+            element: <ProjectListPage />,
             loader: projectLoader,
           },
           {

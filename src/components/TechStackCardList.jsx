@@ -1,8 +1,8 @@
-// isCheckbox = true means ListTechStack used for create or update. So obj needs to be passed in
-// in this case, techStack is a object consists of objects
-export default function ListTechStack({ techStack, isCheckbox, obj }) {
+// when isCheckbox = false, obj isn't required
+
+export default function TechStackCardList({ techStack, isCheckbox, obj }) {
   let res;
-  console.log(techStack);
+  // console.log(techStack);
 
   const renderCardsInRows = (options) => {
     const rows = [];
@@ -13,7 +13,12 @@ export default function ListTechStack({ techStack, isCheckbox, obj }) {
       const row = (
         <div key={i} className="row">
           {rowItems.map((item) => (
-            <div key={item.key} className={options.length >= 3 ? "col-md-4": "col-md-6"}>
+            <div
+              key={item.key}
+              className={
+                options.length >= cardsPerRow ? "col-lg-4 col-md-6" : "col-md-6"
+              }
+            >
               {item.card}
             </div>
           ))}
@@ -27,27 +32,39 @@ export default function ListTechStack({ techStack, isCheckbox, obj }) {
   if (!techStack) {
     res = <></>;
   } else if (isCheckbox) {
+    // for create and update
+    // techStack parameter is an object consists of objects
+    // techStack parameter contains all tech stack exist
     const techStackOptions = Object.entries(techStack).map(([key, item]) => {
       return (
-        <div key={key} className="form-check ms-3 me-3 mb-3">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id={key}
-            name="techStack"
-            value={key}
-            defaultChecked={obj.techStack ? obj.techStack.includes(key) : false}
-          />
-          <label className={`form-check-label ms-3`} htmlFor={key}>
+        <div key={key} className="form-check mb-3">
+          <label className={`form-check-label`} htmlFor={key}>
             <div className="card border-info">
               <div className="card-header">
-                {item.name ? item.name : "No name"}
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id={key}
+                  name="techStack"
+                  value={key}
+                  defaultChecked={
+                    obj.techStack ? obj.techStack.includes(key) : false
+                  }
+                />
+                <div className={item.name ? "" : "undefined-infomation"}>
+                  {item.name ? item.name : "No name"}
+                </div>
               </div>
               <div className="card-body">
                 <h5 className={"card-title " + item.status}>
                   {item.status.toUpperCase()}
                 </h5>
-                <div className="card-text">
+                <div
+                  className={
+                    "card-text " +
+                    (item.description ? "" : "undefined-infomation")
+                  }
+                >
                   {item.description ? item.description : "No description"}
                 </div>
               </div>
@@ -68,10 +85,10 @@ export default function ListTechStack({ techStack, isCheckbox, obj }) {
           data-bs-auto-close="outside"
         >
           {Object.entries(techStack).length === 0
-            ? "Không có Tech Stack"
-            : "Tech Stack"}
+            ? "Không có Tech stack"
+            : "Tech stack"}
         </button>
-        <div className="dropdown-menu dropdown-card-list">
+        <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
           {renderCardsInRows(
             techStackOptions.map((card, index) => ({ key: index, card }))
           )}
@@ -79,15 +96,29 @@ export default function ListTechStack({ techStack, isCheckbox, obj }) {
       </div>
     );
   } else {
+    // for detail
+    // techStack parameter is an array consists of objects
+    // techStack parameter contains all tech stack of this object
     const techStackOptions = techStack.map((item) => {
       return (
         <div className="card border-info mb-3">
-          <div className="card-header">{item.name ? item.name : "No name"}</div>
+          <div
+            className={
+              "card-header " + (item.name ? "" : "undefined-infomation")
+            }
+          >
+            {item.name ? item.name : "No name"}
+          </div>
           <div className="card-body">
             <h5 className={"card-title " + item.status}>
               {item.status.toUpperCase()}
             </h5>
-            <div className="card-text">
+            <div
+              className={
+                "card-text " +
+                (item.description ? "" : "undefined-infomation")
+              }
+            >
               {item.description ? item.description : "No description"}
             </div>
           </div>

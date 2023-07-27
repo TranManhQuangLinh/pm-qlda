@@ -94,6 +94,7 @@ export async function createManagement(obj, objName) {
   const id = push(child(ref(db), `management/${objName}`)).key;
   const updates = {}
   updates[`management/${objName}/` + id] = obj
+  console.log(obj);
   await update(ref(db), updates)
 }
 
