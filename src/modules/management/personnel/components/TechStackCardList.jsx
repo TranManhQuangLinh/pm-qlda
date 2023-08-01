@@ -2,7 +2,7 @@
 
 export default function TechStackCardList({ techStack, isCheckbox, obj }) {
   let res;
-  console.log(techStack);
+  // console.log(techStack);
   // console.log(obj);
 
   const renderCardsInRows = (options) => {
@@ -135,7 +135,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
     // techStack parameter is an array consists of objects
     // techStack parameter contains all tech stack of this object
     const techStackOptions = techStack.map((item) => {
-      console.log(item);
+      // console.log(item);
       return (
         <div className="card border-info mb-3">
           <div

@@ -1,15 +1,42 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Link,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import { getListManagement } from "../../../database";
+import React from "react";
+import { Link, useLoaderData } from "react-router-dom";
+import { getCategory, getListManagement } from "../../../database";
+import Table from "../../../components/Table";
 
 export async function loader() {
   const data = await getListManagement("personnel");
+
+  // get techStack object from list object
+  async function getTechStackObjects(techStackList) {
+    try {
+      const techStackObjects = await Promise.all(
+        techStackList.map(async (techStack) => {
+          const techStackObject = await getCategory(techStack.id, "techStack");
+          return {
+            name: techStackObject.name,
+            id: techStack.id,
+          };
+        })
+      );
+      return techStackObjects;
+    } catch (error) {
+      console.error("Error fetching techStack objects:", error);
+      return [];
+    }
+  }
+  // When you use await inside the map loop, it essentially makes the loop an asynchronous function, and all the iterations of the loop will be executed asynchronously. This means that the obj.techStack may not be fully populated with the resolved promises from getTechStackObjects when the useLoaderData() hook is called.
+  // You can use Promise.all to wait for all the promises to resolve before rendering the component.
+  await Promise.all(
+    Object.values(data).map(async (obj) => {
+      if (obj.techStack && Array.isArray(obj.techStack)) {
+        obj.techStack = await getTechStackObjects(obj.techStack);
+      } else {
+        obj.techStack = []; // Provide a default empty array
+      }
+      return obj;
+    })
+  );
+
   // console.log(data);
   return { data };
 }
@@ -18,85 +45,39 @@ export default function PersonnelList() {
   const { data } = useLoaderData();
   // console.log(data);
   // const data = {
-  //     '0rjlnjz': {
-  //         name: "js",
-  // birthday: '',
-  // phone: '',
-  //         description: '',
-  //         techStack: ['-N_DNueEa36ueEz5LTLq', '-N_DNv--S-qUPuzq35O9'],
-  //         project: '',
-  //     }
-  // }
+  //   "0rjlnjz": {
+  //     name: "js",
+  //     birthday: "",
+  //     phone: "",
+  //     description: "",
+  //     techStack: ["-N_DNueEa36ueEz5LTLq", "-N_DNv--S-qUPuzq35O9"],
+  //     project: "",
+  //   },
+  // };
 
   const columns = [
     {
       dataField: "name",
-      text: "Tên",
+      text: "Họ tên",
+      isObject: false,
     },
     {
       dataField: "dateOfBirth",
       text: "Ngày sinh",
+      isObject: false,
     },
     {
       dataField: "phone",
       text: "Số điện thoại",
+      isObject: false,
+    },
+    {
+      dataField: "techStack",
+      text: "Tech Stack",
+      isObject: true,
+      objGroup: "category",
     },
   ];
-
-  // Table
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchParams] = useSearchParams();
-
-  const urlPage = parseInt(searchParams.get("page"));
-  //   console.log(urlPage);
-
-  if (!isNaN(urlPage) && urlPage !== currentPage) {
-    setCurrentPage(urlPage);
-  }
-
-  if (isNaN(urlPage) && currentPage !== 1) {
-    setCurrentPage(1);
-  }
-
-  const navigate = useNavigate();
-
-  const itemsPerPage = 10;
-  const totalItems = Object.keys(data).length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = Object.values(data).slice(startIndex, endIndex);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    searchParams.set("page", page.toString());
-
-    const isFirstSearch = isNaN(urlPage);
-    navigate(`?${searchParams.toString()}`, { replace: !isFirstSearch });
-  };
-
-  const handleInputPageChange = (e) => {
-    let newPage = parseInt(e.target.value);
-    if (!isNaN(newPage)) {
-      if (newPage < 1) {
-        newPage = 1;
-      } else if (newPage > totalPages) {
-        newPage = totalPages;
-      }
-      setCurrentPage(newPage);
-      navigate(`?page=${newPage}`);
-    } else {
-      setCurrentPage(1);
-      navigate(`?page=1`);
-    }
-  };
-
-  const handleInputPageClick = (e) => {
-    var elemLen = e.target.value.length;
-    e.target.selectionStart = 0;
-    e.target.selectionEnd = elemLen;
-    e.target.focus();
-  };
 
   return (
     <div className="container">
@@ -113,72 +94,7 @@ export default function PersonnelList() {
         </Link>
       </div>
       <div className="row">
-        <table className="list-table table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>STT</th>
-              {columns.map((column, index) => (
-                <th key={index}>{column.text}</th>
-              ))}
-              <th></th>
-            </tr>
-          </thead>
-          <tbody className="align-middle">
-            {currentData.map((item, index) => (
-              <tr key={index}>
-                <td>{startIndex + index + 1}</td>
-                {columns.map((column, columnIndex) => {
-                  return <td key={columnIndex}>{item[column.dataField]}</td>;
-                })}
-                <td className="d-flex justify-content-evenly">
-                  <Form
-                    action={`detail/${Object.keys(data)[startIndex + index]}`}
-                  >
-                    <button className="btn btn-info btn-lg" type="submit">
-                      Chi tiết
-                    </button>
-                  </Form>
-                  <Form
-                    action={`update/${Object.keys(data)[startIndex + index]}`}
-                  >
-                    <button className="btn btn-success btn-lg" type="submit">
-                      Sửa
-                    </button>
-                  </Form>
-                  <Form
-                    method="post"
-                    action={`delete/${Object.keys(data)[startIndex + index]}`}
-                  >
-                    <button className="btn btn-danger btn-lg">Xóa</button>
-                  </Form>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="pagination justify-content-end">
-          <button
-            className="btn btn-primary"
-            disabled={currentPage === 1 || totalPages === 0}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            &lt;
-          </button>
-          <input
-            className="page-number"
-            value={currentPage}
-            onChange={handleInputPageChange}
-            onClick={handleInputPageClick}
-          />
-          <button
-            className="btn btn-primary"
-            disabled={currentPage === totalPages || totalPages === 0}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            &gt;
-          </button>
-        </div>
+        <Table data={data} columns={columns} />
       </div>
     </div>
   );

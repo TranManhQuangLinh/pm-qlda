@@ -3,7 +3,7 @@ import ErrorPage from "../pages/error-page";
 
 // Category
 import ListCategoryPage from "../pages/category/CategoryListPage";
-import { loader as listCategoryLoader } from "../modules/category/ListCategory";
+import { loader as listCategoryLoader } from "../modules/category/CategoryList";
 
 import CategoryDetailPage from "../pages/category/CategoryDetailPage";
 

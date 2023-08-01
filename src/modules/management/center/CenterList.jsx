@@ -1,30 +1,55 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Form,
   Link,
   useLoaderData,
-  useNavigate,
-  useSearchParams,
 } from "react-router-dom";
-import { getListManagement } from "../../../database";
+import { getCategory, getListManagement, getManagement } from "../../../database";
+import Table from "../../../components/Table";
 
 export async function loader() {
   const data = await getListManagement("center");
-  // console.log(data);
 
-  // // get techStack object from list id
-  // await Promise.all(
-  //   Object.entries(data).map(async ([, item]) => {
-  //     if (item.techStack && Array.isArray(item.techStack)) {
-  //       item.techStack = await Promise.all(
-  //         item.techStack.map((i) => getCategory(i, 'techStack')),
-  //       );
-  //     } else {
-  //       item.techStack = []; // Provide a default empty array
-  //     }
-  //     return item;
-  //   }),
-  // );
+  // get techStack object from list id
+  await Promise.all(
+    Object.entries(data).map(async ([, item]) => {
+      if (item.techStack && Array.isArray(item.techStack)) {
+        item.techStack = await Promise.all(
+          item.techStack.map(async (i) => {
+            const obj = await getCategory(i, 'techStack')
+            return {
+              id: i,
+              name: obj.name,
+            }
+          }),
+        );
+      } else {
+        item.techStack = []; // Provide a default empty array
+      }
+      return item;
+    }),
+  );
+
+  // get personnel object from list id
+  await Promise.all(
+    Object.entries(data).map(async ([, item]) => {
+      if (item.personnel && Array.isArray(item.personnel)) {
+        item.personnel = await Promise.all(
+          item.personnel.map(async (i) => {
+            const obj = await getManagement(i, 'personnel')
+            return {
+              id: i,
+              name: obj.name,
+            }
+          }),
+        );
+      } else {
+        item.personnel = []; // Provide a default empty array
+      }
+      return item;
+    }),
+  );
+
+  console.log(data);
 
   return { data };
 }
@@ -46,67 +71,26 @@ export default function CenterList() {
     {
       dataField: "name",
       text: "Tên",
+      isObject: false,
     },
     {
       dataField: "description",
       text: "Chức năng, nhiệm vụ",
+      isObject: false,
+    },
+    {
+      dataField: "techStack",
+      text: "Tech Stack",
+      isObject: true,
+      objGroup: "category",
+    },
+    {
+      dataField: "personnel",
+      text: "Nhân viên",
+      isObject: true,
+      objGroup: "management",
     },
   ];
-
-  // Table
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchParams] = useSearchParams();
-
-  const urlPage = parseInt(searchParams.get("page"));
-  //   console.log(urlPage);
-
-  if (!isNaN(urlPage) && urlPage !== currentPage) {
-    setCurrentPage(urlPage);
-  }
-
-  if (isNaN(urlPage) && currentPage !== 1) {
-    setCurrentPage(1);
-  }
-
-  const navigate = useNavigate();
-
-  const itemsPerPage = 10;
-  const totalItems = Object.keys(data).length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = Object.values(data).slice(startIndex, endIndex);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    searchParams.set("page", page.toString());
-
-    const isFirstSearch = isNaN(urlPage);
-    navigate(`?${searchParams.toString()}`, { replace: !isFirstSearch });
-  };
-
-  const handleInputPageChange = (e) => {
-    let newPage = parseInt(e.target.value);
-    if (!isNaN(newPage)) {
-      if (newPage < 1) {
-        newPage = 1;
-      } else if (newPage > totalPages) {
-        newPage = totalPages;
-      }
-      setCurrentPage(newPage);
-      navigate(`?page=${newPage}`);
-    } else {
-      setCurrentPage(1);
-      navigate("?page=1");
-    }
-  };
-
-  const handleInputPageClick = (e) => {
-    const elemLen = e.target.value.length;
-    e.target.selectionStart = 0;
-    e.target.selectionEnd = elemLen;
-    e.target.focus();
-  };
 
   return (
     <div className="container">
@@ -123,74 +107,7 @@ export default function CenterList() {
         </Link>
       </div>
       <div className="row">
-        <table className="list-table table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>STT</th>
-              {columns.map((column, index) => (
-                <th key={index}>{column.text}</th>
-              ))}
-              <th />
-            </tr>
-          </thead>
-          <tbody className="align-middle">
-            {currentData.map((item, index) => (
-              <tr key={index}>
-                <td>{startIndex + index + 1}</td>
-
-                {columns.map((column, columnIndex) => {
-                  return <td key={columnIndex}>{item[column.dataField]}</td>;
-                })}
-
-                <td className="d-flex justify-content-evenly">
-                  <Form
-                    action={`detail/${Object.keys(data)[startIndex + index]}`}
-                  >
-                    <button className="btn btn-info btn-lg" type="submit">
-                      Chi tiết
-                    </button>
-                  </Form>
-                  <Form
-                    action={`update/${Object.keys(data)[startIndex + index]}`}
-                  >
-                    <button className="btn btn-success btn-lg" type="submit">
-                      Sửa
-                    </button>
-                  </Form>
-                  <Form
-                    method="post"
-                    action={`delete/${Object.keys(data)[startIndex + index]}`}
-                  >
-                    <button className="btn btn-danger btn-lg">Xóa</button>
-                  </Form>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="pagination justify-content-end">
-          <button
-            className="btn btn-primary"
-            disabled={currentPage === 1 || totalPages === 0}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            &lt;
-          </button>
-          <input
-            className="page-number"
-            value={currentPage}
-            onChange={handleInputPageChange}
-            onClick={handleInputPageClick}
-          />
-          <button
-            className="btn btn-primary"
-            disabled={currentPage === totalPages || totalPages === 0}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            &gt;
-          </button>
-        </div>
+        <Table data={data} columns={columns} />
       </div>
     </div>
   );

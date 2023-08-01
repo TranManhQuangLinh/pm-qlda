@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useNavigate, useSearchParams, Form } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useSearchParams, Form, Link } from "react-router-dom";
 
 function Table({ data, columns }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const urlPage = parseInt(searchParams.get("page"));
   //   console.log(urlPage);
@@ -59,7 +59,7 @@ function Table({ data, columns }) {
 
   return (
     <>
-      <table className="list-table table table-bordered table-hover">
+      <table className="list-table table table-bordered table-hover align-middle">
         <thead>
           <tr>
             <th>STT</th>
@@ -74,20 +74,42 @@ function Table({ data, columns }) {
             <tr key={index}>
               <td>{startIndex + index + 1}</td>
 
-              {columns.map((column, columnIndex) => (
-                <td
-                  key={columnIndex}
-                  className={
-                    column.dataField === "status"
-                      ? item[column.dataField].toLowerCase()
-                      : ""
-                  }
-                >
-                  {column.dataField === "status"
-                    ? item[column.dataField].toUpperCase()
-                    : item[column.dataField]}
-                </td>
-              ))}
+              {columns.map((column, columnIndex) => {
+                let className = "";
+                let content = item[column.dataField];
+                if (column.dataField === "status") {
+                  className = item[column.dataField].toLowerCase();
+                  content = item[column.dataField].toUpperCase();
+                }
+
+                if (column.isObject) {
+                  content = item[column.dataField].map((i, contentIndex) => {
+                    return (
+                    <React.Fragment key={contentIndex}>
+                      <Link
+                        to={
+                          "/" +
+                          column.objGroup +
+                          "/" +
+                          column.dataField +
+                          "/detail/" +
+                          i.id
+                        }
+                        className="link-info text-decoration-none"
+                      >
+                        {i.name}
+                      </Link>
+                      {contentIndex !== item[column.dataField].length - 1 ? ", " : ""}
+                    </React.Fragment>
+                  )});
+                }
+
+                return (
+                  <td key={columnIndex} className={className}>
+                    {content}
+                  </td>
+                );
+              })}
 
               <td className="d-flex justify-content-evenly">
                 <Form

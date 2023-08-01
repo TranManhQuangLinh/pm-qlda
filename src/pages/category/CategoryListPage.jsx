@@ -1,5 +1,5 @@
-import ListCategory from "../../modules/category/ListCategory";
+import CategoryList from "../../modules/category/CategoryList";
 
 export default function CategoryListPage() {
-  return <ListCategory />;
+  return <CategoryList />;
 }

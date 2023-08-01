@@ -44,10 +44,6 @@
   margin-top: 1rem;
 }
 
-.table > tbody > tr {
-  cursor: pointer;
-}
-
 .active {
   color: #0da738 !important;
 }
