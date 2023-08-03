@@ -1,13 +1,13 @@
 import React from "react";
 import Table from "../../components/Table";
 import { Link, useLoaderData } from "react-router-dom";
-import { getListCategory } from "../../database";
+import { getListCategory } from "../../apis/database";
 
 export async function loader({ params }) {
   const objName = params.objName;
   // console.log(objName);
   const data = await getListCategory(objName ? objName : "projectType");
-  // console.log(data);
+  console.log(data);
   return { data, objName };
 }
 

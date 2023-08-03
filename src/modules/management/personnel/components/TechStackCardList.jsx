@@ -4,32 +4,17 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
   let res;
   // console.log(techStack);
   // console.log(obj);
-
-  const renderCardsInRows = (options) => {
-    const rows = [];
-    const cardsPerRow = 3; // Number of cards per row on medium-sized screens (md)
-
-    for (let i = 0; i < options.length; i += cardsPerRow) {
-      const rowItems = options.slice(i, i + cardsPerRow);
-      const row = (
-        <div key={i} className="row">
-          {rowItems.map((item) => (
-            <div
-              key={item.key}
-              className={
-                options.length >= cardsPerRow ? "col-lg-4 col-md-6" : "col-md-6"
-              }
-            >
-              {item.card}
-            </div>
-          ))}
-        </div>
-      );
-      rows.push(row);
-    }
-    return rows;
+  const renderCardsInSingleRow = (options) => {
+    return (
+      <div className="row card-list">
+        {options.map((item) => (
+          <div key={item.key} className={"col"}>
+            {item.card}
+          </div>
+        ))}
+      </div>
+    );
   };
-
   if (!techStack) {
     res = <></>;
   } else if (isCheckbox) {
@@ -43,7 +28,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
 
       return (
         <div key={key} className="form-check mb-3">
-          <label className={`form-check-label`} htmlFor={key}>
+          <label className={`form-check-label justify-content-center`} htmlFor={key}>
             <div className="card border-info">
               <div className="card-header">
                 <input
@@ -123,8 +108,8 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
             ? "Không có Tech stack"
             : "Tech stack"}
         </button>
-        <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
-          {renderCardsInRows(
+        <div className="dropdown-menu personnel-dropdown-card-list ps-3 pe-3 ">
+          {renderCardsInSingleRow(
             techStackOptions.map((card, index) => ({ key: index, card }))
           )}
         </div>
@@ -151,8 +136,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
             </h5>
             <div
               className={
-                "card-text " +
-                (item.description ? "" : "undefined-infomation")
+                "card-text " + (item.description ? "" : "undefined-infomation")
               }
             >
               {item.description ? item.description : "No description"}
@@ -178,7 +162,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
 
     res = (
       <div className="d-flex flex-column">
-        {renderCardsInRows(
+        {renderCardsInSingleRow(
           techStackOptions.map((card, index) => ({ key: index, card }))
         )}
       </div>

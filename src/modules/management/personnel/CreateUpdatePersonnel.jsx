@@ -5,8 +5,9 @@ import {
   getListManagement,
   getManagement,
   updateManagement,
-} from "../../../database";
+} from "../../../apis/database";
 import TechStackCardList from "./components/TechStackCardList";
+import ProjectCardList from "../../../components/ProjectCardList";
 
 export async function createLoader() {
   const obj = {};
@@ -140,11 +141,16 @@ export default function CreateUpdatePersonnel() {
         </label>
         <label>
           <span>Tech stack</span>
-          <TechStackCardList techStack={techStack} isCheckbox={true} obj={obj} hasExtraDescription={true} />
+          <TechStackCardList
+            techStack={techStack}
+            isCheckbox={true}
+            obj={obj}
+            hasExtraDescription={true}
+          />
         </label>
         <label>
           <span>Dự án</span>
-          
+          <ProjectCardList project={project} isCheckbox={true} obj={obj} />
         </label>
         <p>
           <button type="submit">Save</button>

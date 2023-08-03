@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { deleteManagement } from "../../../database";
+import { deleteManagement } from "../../../apis/database";
 
 export async function action({ params }) {
     await deleteManagement(params.id, 'center');

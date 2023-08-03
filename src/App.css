@@ -77,23 +77,51 @@
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
 
-.dropdown-card-list {
-  width: 60vw;
-  max-width: 650px;
-}
-
 .form-check {
   padding-left: 0;
 }
 
 .form-check-input {
-  margin-left: 0 !important;
-  margin-right: 1rem;
+  margin-left: -0.5rem !important;
+  margin-right: 0.5rem;
+}
+
+/* Table */
+th,
+td {
+  max-width: 30vw;
 }
 
 /* Card List */
+.dropdown-card-list {
+  width: 40vw;
+  max-width: 30rem;
+}
+
+.personnel-dropdown-card-list {
+  width: 60vw;
+  max-width: 650px;
+}
+
 .undefined-infomation {
   font-size: 1rem;
   font-weight: 300;
   font-style: italic;
+}
+
+.card-list {
+  max-width: 32rem;
+}
+
+.card {
+  max-width: 130px;
+}
+
+/* CategoryWeightCardList */
+.weight-info {
+  font-weight: bold;
+}
+
+.weight-value {
+  color: #FF0000;
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
-import { getCategory, getListManagement } from "../../../database";
+import { getCategory, getListManagement } from "../../../apis/database";
 import Table from "../../../components/Table";
+import { getManagementObjects } from "../../../apis/apiUtils";
 
 export async function loader() {
   const data = await getListManagement("personnel");
@@ -33,10 +34,16 @@ export async function loader() {
       } else {
         obj.techStack = []; // Provide a default empty array
       }
+
+      if (obj.project && Array.isArray(obj.project)) {
+        obj.project = await getManagementObjects(obj.project, "project");
+      } else {
+        obj.project = []; // Provide a default empty array
+      }
+
       return obj;
     })
   );
-
   // console.log(data);
   return { data };
 }
@@ -76,6 +83,12 @@ export default function PersonnelList() {
       text: "Tech Stack",
       isObject: true,
       objGroup: "category",
+    },
+    {
+      dataField: "project",
+      text: "Dự án tham gia",
+      isObject: true,
+      objGroup: "management",
     },
   ];
 

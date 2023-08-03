@@ -1,7 +1,8 @@
 import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
-import { createManagement, getListCategory, getListManagement, getManagement, updateManagement } from "../../../database";
-import TechStackCardList from "../../../components/TechStackCardList";
-import PersonnelCardList from "../../../components/PersonnelCardList";
+import { createManagement, getListCategory, getListManagement, getManagement, updateManagement } from "../../../apis/database";
+import CategoryCardList from "../../../components/CategoryCardList";
+import CategoryWeightCardList from "../../../components/PersonnelCardList";
+import ProjectCardList from "../../../components/ProjectCardList";
 
 export async function createLoader() {
     const obj = {}
@@ -95,15 +96,15 @@ export default function CreateUpdateCenter() {
                 </label>
                 <label>
                     <span>Tech stack</span>
-                    <TechStackCardList techStack={techStack} isCheckbox={true} obj={obj} />
+                    <CategoryCardList techStack={techStack} isCheckbox={true} obj={obj} />
                 </label>
                 <label>
                     <span>Dự án</span>
-                    
+                    <ProjectCardList project={project} isCheckbox={true} obj={obj} />
                 </label>
                 <label>
                     <span>Nhân viên</span>
-                    <PersonnelCardList personnel={personnel} isCheckbox={true} obj={obj} />
+                    <CategoryWeightCardList personnel={personnel} isCheckbox={true} obj={obj} />
                 </label>
                 <p>
                     <button type="submit">Save</button>

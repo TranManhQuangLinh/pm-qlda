@@ -1,8 +1,8 @@
 // when isCheckbox = false, obj isn't required
 
-export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
+export default function CenterCardList({ center, isCheckbox, obj }) {
   let res;
-  // console.log(personnel);
+  // console.log(center);
   // console.log(obj);
 
   const renderCardsInRows = (options) => {
@@ -39,48 +39,41 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
     return rows;
   };
 
-  if (!personnel) {
+  if (!center) {
     res = <></>;
   } else if (isCheckbox) {
     // for create and update
-    // personnel parameter is an object consists of objects
-    // personnel parameter contains all personnel exist
-    const personnelOptions = Object.entries(personnel).map(([key, item]) => {
+    // center parameter is an object consists of objects
+    // center parameter contains all center exist
+    const centerOptions = Object.entries(center).map(([key, item]) => {
       return (
         <div key={key} className="form-check mb-3">
-          <label className={`form-check-label justify-content-center`} htmlFor={key}>
+          <label
+            className={`form-check-label justify-content-center`}
+            htmlFor={key}
+          >
             <div className="card border-info">
               <div className="card-header">
                 <input
                   type="checkbox"
                   className="form-check-input"
                   id={key}
-                  name="personnel"
+                  name="center"
                   value={key}
-                  defaultChecked={
-                    obj.personnel ? obj.personnel.includes(key) : false
-                  }
+                  defaultChecked={obj.center ? obj.center.includes(key) : false}
                 />
                 <div className={item.name ? "" : "undefined-infomation"}>
                   {item.name ? item.name : "No name"}
                 </div>
               </div>
               <div className="card-body">
-                <div className="card-text">
-                  <label className="fs-6 fw-light">Ngày sinh:</label>
-                  <div
-                    className={
-                      item.dateOfBirth ? "" : "undefined-infomation"
-                    }
-                  >
-                    {item.dateOfBirth ? item.dateOfBirth : "No date of birth"}
-                  </div>
-                </div>
-                <div className="card-text">
-                  <label className="fs-6 fw-light">Số điện thoại:</label>
-                  <div className={item.phone ? "" : "undefined-infomation"}>
-                    {item.phone ? item.phone : "No phone number"}
-                  </div>
+                <div
+                  className={
+                    "card-text " +
+                    (item.description ? "" : "undefined-infomation")
+                  }
+                >
+                  {item.description ? item.description : "No description"}
                 </div>
               </div>
             </div>
@@ -93,28 +86,28 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
         <button
           type="button"
           className={`btn btn-primary dropdown-toggle ${
-            Object.entries(personnel).length === 0 ? "disabled" : ""
+            Object.entries(center).length === 0 ? "disabled" : ""
           }`}
           data-bs-toggle="dropdown"
           aria-expanded="false"
           data-bs-auto-close="outside"
         >
-          {Object.entries(personnel).length === 0
-            ? "Không có Nhân sự"
-            : "Nhân sự"}
+          {Object.entries(center).length === 0
+            ? "Không có Trung tâm"
+            : "Trung tâm"}
         </button>
         <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
           {renderCardsInRows(
-            personnelOptions.map((card, index) => ({ key: index, card }))
+            centerOptions.map((card, index) => ({ key: index, card }))
           )}
         </div>
       </div>
     );
   } else {
     // for detail
-    // personnel parameter is an array consists of objects
-    // personnel parameter contains all personnel of this object
-    const personnelOptions = personnel.map((item) => {
+    // center parameter is an array consists of objects
+    // center parameter contains all center of this object
+    const centerOptions = center.map((item) => {
       return (
         <div className="card border-info mb-3">
           <div
@@ -125,19 +118,12 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
             {item.name ? item.name : "No name"}
           </div>
           <div className="card-body">
-            <div className="card-text">
-              <label className="fs-6 fw-light">Ngày sinh:</label>
-              <div
-                className={item.dateOfBirth ? "" : "undefined-infomation"}
-              >
-                {item.dateOfBirth ? item.dateOfBirth : "No date of birth"}
-              </div>
-            </div>
-            <div className="card-text">
-              <label className="fs-6 fw-light">Số điện thoại:</label>
-              <div className={item.phone ? "" : "undefined-infomation"}>
-                {item.phone ? item.phone : "No phone number"}
-              </div>
+            <div
+              className={
+                "card-text " + (item.description ? "" : "undefined-infomation")
+              }
+            >
+              {item.description ? item.description : "No description"}
             </div>
           </div>
         </div>
@@ -147,7 +133,7 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
     res = (
       <div className="d-flex flex-column">
         {renderCardsInRows(
-          personnelOptions.map((card, index) => ({ key: index, card }))
+          centerOptions.map((card, index) => ({ key: index, card }))
         )}
       </div>
     );

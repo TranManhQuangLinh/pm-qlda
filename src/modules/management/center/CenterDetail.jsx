@@ -1,7 +1,9 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
-import TechStackCardList from "../../../components/TechStackCardList";
-import { getCategory, getManagement } from "../../../database";
-import PersonnelCardList from "../../../components/PersonnelCardList";
+import CategoryCardList from "../../../components/CategoryCardList";
+import { getManagement } from "../../../apis/database";
+import CategoryWeightCardList from "../../../components/PersonnelCardList";
+import { populateData } from "../../../apis/apiUtils";
+import ProjectCardList from "../../../components/ProjectCardList";
 
 export async function loader({ params }) {
   const obj = await getManagement(params.id, "center");
@@ -10,48 +12,12 @@ export async function loader({ params }) {
   //   name: "a",
   //   techStack: ["-N_ilb44UiKt7cAB38_N", "-N_ilbT9mAukfjAuiCMH"],
   //   personnel: ['-NaLbV7khrg5nsJvbM6d'],
-  //   
+  //
   // };
 
-  // get techStack object from list id
-  async function getTechStackObjects(techStackIds) {
-    try {
-      const techStackObjects = await Promise.all(
-        techStackIds.map((id) => getCategory(id, "techStack"))
-      );
-      return techStackObjects;
-    } catch (error) {
-      console.error("Error fetching techStack objects:", error);
-      return [];
-    }
-  }
+  await populateData(obj, true);
 
-  if (obj.techStack && Array.isArray(obj.techStack)) {
-    obj.techStack = await getTechStackObjects(obj.techStack);
-  } else {
-    obj.techStack = []; // Provide a default empty array
-  }
-
-  // get personnel object from list id
-  async function getPersonnelObjects(personnelIds) {
-    try {
-      const personnelObjects = await Promise.all(
-        personnelIds.map((id) => getManagement(id, "personnel"))
-      );
-      return personnelObjects;
-    } catch (error) {
-      console.error("Error fetching personnel objects:", error);
-      return [];
-    }
-  }
-
-  if (obj.personnel && Array.isArray(obj.personnel)) {
-    obj.personnel = await getPersonnelObjects(obj.personnel);
-  } else {
-    obj.personnel = []; // Provide a default empty array
-  }
-
-  console.log(obj);
+  // console.log(obj);
 
   return { obj };
 }
@@ -94,15 +60,18 @@ export default function CenterDetail() {
         </label>
         <label>
           <span>Tech stack</span>
-          <TechStackCardList techStack={obj.techStack} isCheckbox={false} />
+          <CategoryCardList techStack={obj.techStack} isCheckbox={false} />
         </label>
         <label>
           <span>Dự án</span>
-
+          <ProjectCardList project={obj.project} isCheckbox={false} />
         </label>
         <label>
           <span>Nhân viên</span>
-          <PersonnelCardList personnel={obj.personnel} isCheckbox={false} />
+          <CategoryWeightCardList
+            personnel={obj.personnel}
+            isCheckbox={false}
+          />
         </label>
         <p>
           <button

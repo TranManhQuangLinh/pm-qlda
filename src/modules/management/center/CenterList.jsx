@@ -1,54 +1,12 @@
 import React from "react";
-import {
-  Link,
-  useLoaderData,
-} from "react-router-dom";
-import { getCategory, getListManagement, getManagement } from "../../../database";
+import { Link, useLoaderData } from "react-router-dom";
+import { getListManagement } from "../../../apis/database";
 import Table from "../../../components/Table";
+import { populateData } from "../../../apis/apiUtils";
 
 export async function loader() {
   const data = await getListManagement("center");
-
-  // get techStack object from list id
-  await Promise.all(
-    Object.entries(data).map(async ([, item]) => {
-      if (item.techStack && Array.isArray(item.techStack)) {
-        item.techStack = await Promise.all(
-          item.techStack.map(async (i) => {
-            const obj = await getCategory(i, 'techStack')
-            return {
-              id: i,
-              name: obj.name,
-            }
-          }),
-        );
-      } else {
-        item.techStack = []; // Provide a default empty array
-      }
-      return item;
-    }),
-  );
-
-  // get personnel object from list id
-  await Promise.all(
-    Object.entries(data).map(async ([, item]) => {
-      if (item.personnel && Array.isArray(item.personnel)) {
-        item.personnel = await Promise.all(
-          item.personnel.map(async (i) => {
-            const obj = await getManagement(i, 'personnel')
-            return {
-              id: i,
-              name: obj.name,
-            }
-          }),
-        );
-      } else {
-        item.personnel = []; // Provide a default empty array
-      }
-      return item;
-    }),
-  );
-
+  await populateData(data);
   console.log(data);
 
   return { data };
@@ -83,6 +41,12 @@ export default function CenterList() {
       text: "Tech Stack",
       isObject: true,
       objGroup: "category",
+    },
+    {
+      dataField: "project",
+      text: "Dự án",
+      isObject: true,
+      objGroup: "management",
     },
     {
       dataField: "personnel",

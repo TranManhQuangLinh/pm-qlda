@@ -23,7 +23,7 @@ import CenterListPage from "../pages/management/center/CenterListPage";
 import { loader as centerLoader } from "../modules/management/center/CenterList";
 
 import CenterDetailPage from "../pages/management/center/CenterDetailPage";
-import { loader as centerDetailLoader } from "../modules/management/center/CenterDetail"
+import { loader as centerDetailLoader } from "../modules/management/center/CenterDetail";
 
 import CreateUpdateCenterPage from "../pages/management/center/CreateUpdateCenterPage";
 import {
@@ -39,9 +39,8 @@ import { action as deleteCenterAction } from "../modules/management/center/delet
 import PersonnelListPage from "../pages/management/personnel/PersonnelListPage";
 import { loader as personnelLoader } from "../modules/management/personnel/PersonnelList";
 
-
 import PersonnelDetailPage from "../pages/management/personnel/PersonnelDetailPage";
-import { loader as personnelDetailLoader } from "../modules/management/personnel/PersonnelDetail"
+import { loader as personnelDetailLoader } from "../modules/management/personnel/PersonnelDetail";
 
 import CreateUpdatePersonnelPage from "../pages/management/personnel/CreateUpdatePersonnelPage";
 import {
@@ -49,15 +48,26 @@ import {
   createAction as createPersonnelAction,
   updateLoader as updatePersonnelLoader,
   updateAction as updatePersonnelAction,
-} from "../modules/management/personnel/CreateUpdatePersonnel"
+} from "../modules/management/personnel/CreateUpdatePersonnel";
 
-import { action as deletePersonnelAction } from "../modules/management/personnel/deletePersonnel"
+import { action as deletePersonnelAction } from "../modules/management/personnel/deletePersonnel";
 
 // Project
 import ProjectListPage from "../pages/management/project/ProjectListPage";
 import { loader as projectLoader } from "../modules/management/project/ProjectList";
 
+import ProjectDetailPage from "../pages/management/project/ProjectDetailPage";
+import { loader as projectDetailLoader } from "../modules/management/project/ProjectDetail";
+
 import CreateUpdateProjectPage from "../pages/management/project/CreateUpdateProjectPage";
+import {
+  createLoader as createProjectLoader,
+  createAction as createProjectAction,
+  updateLoader as updateProjectLoader,
+  updateAction as updateProjectAction,
+} from "../modules/management/project/CreateUpdateProject";
+
+import { action as deleteProjectAction } from "../modules/management/project/deleteProject";
 
 import { Layout } from "../layout";
 import {
@@ -82,6 +92,7 @@ import {
   PATH_PROJECT,
   PATH_PROJECT_CREATE,
   PATH_PROJECT_DELETE,
+  PATH_PROJECT_DETAIL,
   PATH_PROJECT_UPDATE,
 } from "./routes.paths";
 
@@ -204,14 +215,24 @@ export const router = createBrowserRouter([
           {
             path: PATH_PROJECT_CREATE,
             element: <CreateUpdateProjectPage />,
+            loader: createProjectLoader,
+            action: createProjectAction,
+          },
+          {
+            path: PATH_PROJECT_DETAIL,
+            element: <ProjectDetailPage />,
+            loader: projectDetailLoader,
           },
           {
             path: PATH_PROJECT_UPDATE,
-            element: <></>,
+            element: <CreateUpdateProjectPage />,
+            loader: updateProjectLoader,
+            action: updateProjectAction,
           },
           {
             path: PATH_PROJECT_DELETE,
             element: <></>,
+            action: deleteProjectAction,
           },
         ],
       },

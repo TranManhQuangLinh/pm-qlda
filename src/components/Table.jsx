@@ -59,7 +59,7 @@ function Table({ data, columns }) {
 
   return (
     <>
-      <table className="list-table table table-bordered table-hover align-middle">
+      <table className="list-table table table-bordered align-middle">
         <thead>
           <tr>
             <th>STT</th>
@@ -75,33 +75,36 @@ function Table({ data, columns }) {
               <td>{startIndex + index + 1}</td>
 
               {columns.map((column, columnIndex) => {
-                let className = "";
+                let className = "text-break";
                 let content = item[column.dataField];
                 if (column.dataField === "status") {
-                  className = item[column.dataField].toLowerCase();
+                  className += " " + item[column.dataField].toLowerCase();
                   content = item[column.dataField].toUpperCase();
                 }
 
                 if (column.isObject) {
                   content = item[column.dataField].map((i, contentIndex) => {
                     return (
-                    <React.Fragment key={contentIndex}>
-                      <Link
-                        to={
-                          "/" +
-                          column.objGroup +
-                          "/" +
-                          column.dataField +
-                          "/detail/" +
-                          i.id
-                        }
-                        className="link-info text-decoration-none"
-                      >
-                        {i.name}
-                      </Link>
-                      {contentIndex !== item[column.dataField].length - 1 ? ", " : ""}
-                    </React.Fragment>
-                  )});
+                      <React.Fragment key={contentIndex}>
+                        <Link
+                          to={
+                            "/" +
+                            column.objGroup +
+                            "/" +
+                            column.dataField +
+                            "/detail/" +
+                            i.id
+                          }
+                          className="link-info text-decoration-none"
+                        >
+                          {i.name}
+                        </Link>
+                        {contentIndex !== item[column.dataField].length - 1
+                          ? ", "
+                          : ""}
+                      </React.Fragment>
+                    );
+                  });
                 }
 
                 return (
@@ -111,27 +114,29 @@ function Table({ data, columns }) {
                 );
               })}
 
-              <td className="d-flex justify-content-evenly">
-                <Form
-                  action={`detail/${Object.keys(data)[startIndex + index]}`}
-                >
-                  <button className="btn btn-info btn-lg" type="submit">
-                    Chi tiết
-                  </button>
-                </Form>
-                <Form
-                  action={`update/${Object.keys(data)[startIndex + index]}`}
-                >
-                  <button className="btn btn-success btn-lg" type="submit">
-                    Sửa
-                  </button>
-                </Form>
-                <Form
-                  method="post"
-                  action={`delete/${Object.keys(data)[startIndex + index]}`}
-                >
-                  <button className="btn btn-danger btn-lg">Xóa</button>
-                </Form>
+              <td>
+                <div className="d-flex justify-content-evenly">
+                  <Form
+                    action={`detail/${Object.keys(data)[startIndex + index]}`}
+                  >
+                    <button className="btn btn-info btn-lg" type="submit">
+                      Chi tiết
+                    </button>
+                  </Form>
+                  <Form
+                    action={`update/${Object.keys(data)[startIndex + index]}`}
+                  >
+                    <button className="btn btn-success btn-lg" type="submit">
+                      Sửa
+                    </button>
+                  </Form>
+                  <Form
+                    method="post"
+                    action={`delete/${Object.keys(data)[startIndex + index]}`}
+                  >
+                    <button className="btn btn-danger btn-lg">Xóa</button>
+                  </Form>
+                </div>
               </td>
             </tr>
           ))}

@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { deleteCategory } from "../../database";
+import { deleteCategory } from "../../apis/database";
 
 export async function action({ params }) {
     await deleteCategory(params.id, params.objName ? params.objName : 'projectType');

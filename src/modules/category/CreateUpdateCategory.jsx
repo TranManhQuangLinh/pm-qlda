@@ -1,5 +1,5 @@
 import { Form, redirect, useNavigate, useLoaderData } from "react-router-dom";
-import { createCategory, updateCategory, getCategory } from "../../database";
+import { createCategory, updateCategory, getCategory } from "../../apis/database";
 
 export async function createAction({ request, params }) {
     const formData = await request.formData();

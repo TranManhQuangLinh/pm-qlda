@@ -1,6 +1,8 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
-import { getCategory, getManagement } from "../../../database";
+import { getCategory, getManagement } from "../../../apis/database";
 import TechStackCardList from "./components/TechStackCardList";
+import ProjectCardList from "../../../components/ProjectCardList";
+import { getManagementObjects } from "../../../apis/apiUtils";
 
 export async function loader({ params }) {
   const obj = await getManagement(params.id, "personnel");
@@ -39,6 +41,13 @@ export async function loader({ params }) {
   } else {
     obj.techStack = []; // Provide a default empty array
   }
+
+  if (obj.project && Array.isArray(obj.project)) {
+    obj.project = await getManagementObjects(obj.project, "project", true);
+  } else {
+    obj.project = []; // Provide a default empty array
+  }
+
   //   console.log(obj);
 
   return { obj };
@@ -86,14 +95,11 @@ export default function PersonnelDetail() {
         </label>
         <label>
           <span>Tech stack</span>
-          <TechStackCardList
-            techStack={obj.techStack}
-            isCheckbox={false}
-            obj={obj}
-          />
+          <TechStackCardList techStack={obj.techStack} isCheckbox={false} />
         </label>
         <label>
           <span>Dự án</span>
+          <ProjectCardList project={obj.project} isCheckbox={false} />
         </label>
         <p>
           <button
