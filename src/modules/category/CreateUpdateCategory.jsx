@@ -11,7 +11,7 @@ function validate() {
     return true;
   }
   const weightValue = +weightField.value;
-  console.log(weightValue);
+  // console.log(weightValue);
 
   if (!Number.isInteger(weightValue) || weightValue <= 0) {
     alert("Vui lòng nhập một trọng số hợp lệ.");

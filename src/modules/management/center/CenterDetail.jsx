@@ -25,7 +25,7 @@ export async function loader({ params }) {
 export default function CenterDetail() {
   const navigate = useNavigate();
   const { obj } = useLoaderData();
-  console.log(obj);
+  // console.log(obj);
   // console.log(techStack);
   // console.log(project);
   // console.log(personnel);
@@ -60,7 +60,7 @@ export default function CenterDetail() {
         </label>
         <label>
           <span>Tech stack</span>
-          <CategoryCardList techStack={obj.techStack} isCheckbox={false} />
+          <CategoryCardList categoryObj={obj.techStack} isCheckbox={false} />
         </label>
         <label>
           <span>Dự án</span>

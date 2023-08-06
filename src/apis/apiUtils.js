@@ -44,94 +44,127 @@ export async function getManagementObjects(idList, objName, forDetail) {
 }
 
 export async function populateData(data, forDetail = false) {
-  if(forDetail){
-    const obj = data
+  if (forDetail) {
+    const obj = data;
     if (obj.projectType && Array.isArray(obj.projectType)) {
-        obj.projectType = await getCategoryObjects(
-          obj.projectType,
-          "projectType", forDetail
-        );
-      } else {
-        obj.projectType = []; // Provide a default empty array
-      }
+      obj.projectType = await getCategoryObjects(
+        obj.projectType,
+        "projectType",
+        forDetail
+      );
+    } else {
+      obj.projectType = []; // Provide a default empty array
+    }
 
-      if (obj.projectStatus && Array.isArray(obj.projectStatus)) {
-        obj.projectStatus = await getCategoryObjects(
-          obj.projectStatus,
-          "projectStatus", forDetail
-        );
-      } else {
-        obj.projectStatus = []; // Provide a default empty array
-      }
+    if (obj.projectStatus && Array.isArray(obj.projectStatus)) {
+      obj.projectStatus = await getCategoryObjects(
+        obj.projectStatus,
+        "projectStatus",
+        forDetail
+      );
+    } else {
+      obj.projectStatus = []; // Provide a default empty array
+    }
 
-      if (obj.techStack && Array.isArray(obj.techStack)) {
-        obj.techStack = await getCategoryObjects(obj.techStack, "techStack", forDetail);
-      } else {
-        obj.techStack = []; // Provide a default empty array
-      }
+    if (obj.techStack && Array.isArray(obj.techStack)) {
+      obj.techStack = await getCategoryObjects(
+        obj.techStack,
+        "techStack",
+        forDetail
+      );
+    } else {
+      obj.techStack = []; // Provide a default empty array
+    }
 
-      if (obj.center && Array.isArray(obj.center)) {
-        obj.center = await getManagementObjects(obj.center, "center", forDetail);
-      } else {
-        obj.center = []; // Provide a default empty array
-      }
+    if (obj.center && Array.isArray(obj.center)) {
+      obj.center = await getManagementObjects(obj.center, "center", forDetail);
+    } else {
+      obj.center = []; // Provide a default empty array
+    }
 
-      if (obj.personnel && Array.isArray(obj.personnel)) {
-        obj.personnel = await getManagementObjects(obj.personnel, "personnel", forDetail);
-      } else {
-        obj.personnel = []; // Provide a default empty array
-      }
+    if (obj.personnel && Array.isArray(obj.personnel)) {
+      obj.personnel = await getManagementObjects(
+        obj.personnel,
+        "personnel",
+        forDetail
+      );
+    } else {
+      obj.personnel = []; // Provide a default empty array
+    }
 
-      if (obj.project && Array.isArray(obj.project)) {
-        obj.project = await getManagementObjects(obj.project, "project", forDetail);
-      } else {
-        obj.project = []; // Provide a default empty array
-      }
-  } else
-    {await Promise.all(
-    Object.values(data).map(async (obj) => {
-      if (obj.projectType && Array.isArray(obj.projectType)) {
-        obj.projectType = await getCategoryObjects(
-          obj.projectType,
-          "projectType", forDetail
-        );
-      } else {
-        obj.projectType = []; // Provide a default empty array
-      }
+    if (obj.project && Array.isArray(obj.project)) {
+      obj.project = await getManagementObjects(
+        obj.project,
+        "project",
+        forDetail
+      );
+    } else {
+      obj.project = []; // Provide a default empty array
+    }
+  } else {
+    await Promise.all(
+      Object.values(data).map(async (obj) => {
+        if (obj.projectType && Array.isArray(obj.projectType)) {
+          obj.projectType = await getCategoryObjects(
+            obj.projectType,
+            "projectType",
+            forDetail
+          );
+        } else {
+          obj.projectType = []; // Provide a default empty array
+        }
 
-      if (obj.projectStatus && Array.isArray(obj.projectStatus)) {
-        obj.projectStatus = await getCategoryObjects(
-          obj.projectStatus,
-          "projectStatus", forDetail
-        );
-      } else {
-        obj.projectStatus = []; // Provide a default empty array
-      }
+        if (obj.projectStatus && Array.isArray(obj.projectStatus)) {
+          obj.projectStatus = await getCategoryObjects(
+            obj.projectStatus,
+            "projectStatus",
+            forDetail
+          );
+        } else {
+          obj.projectStatus = []; // Provide a default empty array
+        }
 
-      if (obj.techStack && Array.isArray(obj.techStack)) {
-        obj.techStack = await getCategoryObjects(obj.techStack, "techStack", forDetail);
-      } else {
-        obj.techStack = []; // Provide a default empty array
-      }
+        if (obj.techStack && Array.isArray(obj.techStack)) {
+          obj.techStack = await getCategoryObjects(
+            obj.techStack,
+            "techStack",
+            forDetail
+          );
+        } else {
+          obj.techStack = []; // Provide a default empty array
+        }
 
-      if (obj.center && Array.isArray(obj.center)) {
-        obj.center = await getManagementObjects(obj.center, "center", forDetail);
-      } else {
-        obj.center = []; // Provide a default empty array
-      }
+        if (obj.center && Array.isArray(obj.center)) {
+          obj.center = await getManagementObjects(
+            obj.center,
+            "center",
+            forDetail
+          );
+        } else {
+          obj.center = []; // Provide a default empty array
+        }
 
-      if (obj.personnel && Array.isArray(obj.personnel)) {
-        obj.personnel = await getManagementObjects(obj.personnel, "personnel", forDetail);
-      } else {
-        obj.personnel = []; // Provide a default empty array
-      }
+        if (obj.personnel && Array.isArray(obj.personnel)) {
+          obj.personnel = await getManagementObjects(
+            obj.personnel,
+            "personnel",
+            forDetail
+          );
+        } else {
+          obj.personnel = []; // Provide a default empty array
+        }
 
-      if (obj.project && Array.isArray(obj.project)) {
-        obj.project = await getManagementObjects(obj.project, "project", forDetail);
-      } else {
-        obj.project = []; // Provide a default empty array
-      }
-      return obj;
-    })
-  );}
+        if (obj.project && Array.isArray(obj.project)) {
+          obj.project = await getManagementObjects(
+            obj.project,
+            "project",
+            forDetail
+          );
+        } else {
+          obj.project = []; // Provide a default empty array
+        }
+        return obj;
+      })
+    );
+  }
 }

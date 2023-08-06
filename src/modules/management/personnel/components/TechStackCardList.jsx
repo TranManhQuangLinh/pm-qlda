@@ -28,7 +28,10 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
 
       return (
         <div key={key} className="form-check mb-3">
-          <label className={`form-check-label justify-content-center`} htmlFor={key}>
+          <label
+            className={`form-check-label justify-content-center`}
+            htmlFor={key}
+          >
             <div className="card border-info">
               <div className="card-header">
                 <input

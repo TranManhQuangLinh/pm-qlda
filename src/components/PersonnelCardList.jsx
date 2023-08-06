@@ -48,7 +48,10 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
     const personnelOptions = Object.entries(personnel).map(([key, item]) => {
       return (
         <div key={key} className="form-check mb-3">
-          <label className={`form-check-label justify-content-center`} htmlFor={key}>
+          <label
+            className={`form-check-label justify-content-center`}
+            htmlFor={key}
+          >
             <div className="card border-info">
               <div className="card-header">
                 <input
@@ -69,9 +72,7 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
                 <div className="card-text">
                   <label className="fs-6 fw-light">Ngày sinh:</label>
                   <div
-                    className={
-                      item.dateOfBirth ? "" : "undefined-infomation"
-                    }
+                    className={item.dateOfBirth ? "" : "undefined-infomation"}
                   >
                     {item.dateOfBirth ? item.dateOfBirth : "No date of birth"}
                   </div>
@@ -127,9 +128,7 @@ export default function PersonnelCardList({ personnel, isCheckbox, obj }) {
           <div className="card-body">
             <div className="card-text">
               <label className="fs-6 fw-light">Ngày sinh:</label>
-              <div
-                className={item.dateOfBirth ? "" : "undefined-infomation"}
-              >
+              <div className={item.dateOfBirth ? "" : "undefined-infomation"}>
                 {item.dateOfBirth ? item.dateOfBirth : "No date of birth"}
               </div>
             </div>

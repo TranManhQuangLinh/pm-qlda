@@ -2,20 +2,18 @@ import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { getListManagement } from "../../../apis/database";
 import Table from "../../../components/Table";
-import {
-  populateData,
-} from "../../../apis/apiUtils";
+import { populateData } from "../../../apis/apiUtils";
 
 export async function loader() {
   const data = await getListManagement("project");
-  await populateData(data)
-  console.log(data);
+  await populateData(data);
+  // console.log(data);
   return { data };
 }
 
 export default function ProjectList() {
   const { data } = useLoaderData();
-  console.log(data);
+  // console.log(data);
 
   // const data = {
   //     '0rjlnjz': {

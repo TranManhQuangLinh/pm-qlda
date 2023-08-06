@@ -15,7 +15,7 @@ export async function loader({ params }) {
 export default function ProjectDetail() {
   const navigate = useNavigate();
   const { obj } = useLoaderData();
-  console.log(obj);
+  // console.log(obj);
   return (
     <div className="container">
       <div className="row">
@@ -37,13 +37,13 @@ export default function ProjectDetail() {
         <label>
           <span>Trạng thái dự án</span>
           <CategoryCardList
-            projectStatus={obj.projectStatus}
+            categoryObj={obj.projectStatus}
             isCheckbox={false}
           />
         </label>
         <label>
           <span>Tech stack</span>
-          <CategoryCardList techStack={obj.techStack} isCheckbox={false} />
+          <CategoryCardList categoryObj={obj.techStack} isCheckbox={false} />
         </label>
         <label>
           <span>Trung tâm phụ trách</span>

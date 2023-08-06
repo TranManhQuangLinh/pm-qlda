@@ -7,7 +7,7 @@ import { populateData } from "../../../apis/apiUtils";
 export async function loader() {
   const data = await getListManagement("center");
   await populateData(data);
-  console.log(data);
+  // console.log(data);
 
   return { data };
 }

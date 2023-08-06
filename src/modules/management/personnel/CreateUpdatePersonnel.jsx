@@ -29,7 +29,7 @@ function validate(newObj) {
     const [day, month, year] = newObj.dateOfBirth.split("/");
     const isValidDate = !isNaN(day) && !isNaN(month) && !isNaN(year);
     const parsedDate = new Date(`${year}-${month}-${day}`);
-    console.log(parsedDate);
+    // console.log(parsedDate);
 
     if (!isValidDate || parsedDate.toString() === "Invalid Date") {
       alert(
