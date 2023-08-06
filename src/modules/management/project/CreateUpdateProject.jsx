@@ -71,12 +71,13 @@ export default function CreateUpdateProject() {
             <Form method="post" id="contact-form">
 
                 <label>
-                    <span>Tên</span>
+                    <span>Tên*</span>
                     <input
                         type="text"
                         name="name"
                         placeholder="Tên"
                         defaultValue={obj.name}
+                        required
                     />
                 </label>
                 

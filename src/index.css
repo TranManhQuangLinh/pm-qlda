@@ -330,16 +330,16 @@ i {
   margin-right: 1rem;
 }
 #contact-form > p:first-child,
-#contact-form label {
+#contact-form > label {
   display: flex;
 }
 #contact-form p:first-child span,
-#contact-form label span {
+#contact-form > label > span {
   width: 8rem;
 }
 #contact-form p:first-child input,
-#contact-form label input,
-#contact-form label textarea {
+#contact-form > label > input,
+#contact-form > label > textarea {
   flex-grow: 2;
 }
 

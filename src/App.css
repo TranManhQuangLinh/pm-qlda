@@ -95,12 +95,12 @@ td {
 /* Card List */
 .dropdown-card-list {
   width: 40vw;
-  max-width: 30rem;
+  max-width: 32rem;
 }
 
 .personnel-dropdown-card-list {
   width: 60vw;
-  max-width: 650px;
+  max-width: 32rem;
 }
 
 .undefined-infomation {
