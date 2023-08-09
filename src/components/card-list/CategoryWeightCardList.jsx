@@ -1,23 +1,21 @@
 // when isCheckbox = false, obj isn't required
 
+import { useState } from "react";
+import { renderCardsInSingleRow } from "./utils";
+
 export default function CategoryWeightCardList({
   projectType,
   isCheckbox,
   obj,
 }) {
+  const [showContent, setShowContent] = useState(false);
+
+  const toggleContent = () => {
+    setShowContent(!showContent);
+  };
+
   let res;
   // console.log(projectType);
-  const renderCardsInSingleRow = (options) => {
-    return (
-      <div className="row card-list">
-        {options.map((item) => (
-          <div key={item.key} className={"col"}>
-            {item.card}
-          </div>
-        ))}
-      </div>
-    );
-  };
 
   if (!projectType) {
     res = <></>;
@@ -48,23 +46,12 @@ export default function CategoryWeightCardList({
                   <div className={item.name ? "" : "undefined-infomation"}>
                     {item.name ? item.name : "No name"}
                   </div>
-                  <div className="weight-info">
-                    Trọng số:{" "}
-                    <span className="weight-value">{item.weight}</span>
-                  </div>
+                  Trọng số: <span className="weight-value">{item.weight}</span>
                 </div>
                 <div className="card-body">
                   <h5 className={"card-title " + item.status}>
                     {item.status.toUpperCase()}
                   </h5>
-                  <div
-                    className={
-                      "card-text " +
-                      (item.description ? "" : "undefined-infomation")
-                    }
-                  >
-                    {item.description ? item.description : "No description"}
-                  </div>
                 </div>
               </div>
             </label>
@@ -72,26 +59,21 @@ export default function CategoryWeightCardList({
         );
       }
     );
-    return (
-      <div className="dropdown-center">
+    res = (
+      <div>
         <button
           type="button"
-          className={`btn btn-primary dropdown-toggle ${
-            Object.entries(projectType).length === 0 ? "disabled" : ""
+          className={`btn btn-primary mb-3 ${
+            Object.entries(projectType).length !== 0 ? "" : "disabled"
           }`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          data-bs-auto-close="outside"
+          onClick={toggleContent}
         >
-          {Object.entries(projectType).length === 0
-            ? "Không có Loại dự án"
-            : "Loại dự án"}
+          {Object.entries(projectType).length !== 0 ? (showContent ? "Đóng" : "Chọn") : "Không có"}
         </button>
-        <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
-          {renderCardsInSingleRow(
+        {showContent &&
+          renderCardsInSingleRow(
             projectTypeOptions.map((card, index) => ({ key: index, card }))
           )}
-        </div>
       </div>
     );
   } else {
@@ -109,21 +91,12 @@ export default function CategoryWeightCardList({
             <div className={item.name ? "" : "undefined-infomation"}>
               {item.name ? item.name : "No name"}
             </div>
-            <div className="weight-info">
-              Trọng số: <span className="weight-value">{item.weight}</span>
-            </div>
+            Trọng số: <span className="weight-value">{item.weight}</span>
           </div>
           <div className="card-body">
             <h5 className={"card-title " + item.status}>
               {item.status.toUpperCase()}
             </h5>
-            <div
-              className={
-                "card-text " + (item.description ? "" : "undefined-infomation")
-              }
-            >
-              {item.description ? item.description : "No description"}
-            </div>
           </div>
         </div>
       );

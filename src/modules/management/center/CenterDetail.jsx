@@ -1,9 +1,9 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
-import CategoryCardList from "../../../components/CategoryCardList";
+import CategoryCardList from "../../../components/card-list/CategoryCardList";
 import { getManagement } from "../../../apis/database";
-import CategoryWeightCardList from "../../../components/PersonnelCardList";
+import CategoryWeightCardList from "../../../components/card-list/PersonnelCardList";
 import { populateData } from "../../../apis/apiUtils";
-import ProjectCardList from "../../../components/ProjectCardList";
+import ProjectCardList from "../../../components/card-list/ProjectCardList";
 
 export async function loader({ params }) {
   const obj = await getManagement(params.id, "center");

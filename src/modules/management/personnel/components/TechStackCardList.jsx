@@ -1,20 +1,19 @@
 // when isCheckbox = false, obj isn't required
 
+import { useState } from "react";
+import { renderCardsInSingleRow } from "../../../../components/card-list/utils";
+
 export default function TechStackCardList({ techStack, isCheckbox, obj }) {
+  const [showContent, setShowContent] = useState(false);
+
+  const toggleContent = () => {
+    setShowContent(!showContent);
+  };
+
   let res;
   // console.log(techStack);
   // console.log(obj);
-  const renderCardsInSingleRow = (options) => {
-    return (
-      <div className="row card-list">
-        {options.map((item) => (
-          <div key={item.key} className={"col"}>
-            {item.card}
-          </div>
-        ))}
-      </div>
-    );
-  };
+
   if (!techStack) {
     res = <></>;
   } else if (isCheckbox) {
@@ -32,7 +31,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
             className={`form-check-label justify-content-center`}
             htmlFor={key}
           >
-            <div className="card border-info">
+            <div className="card personnel-card border-info">
               <div className="card-header">
                 <input
                   type="checkbox"
@@ -54,14 +53,6 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
                 <h5 className={"card-title " + item.status}>
                   {item.status.toUpperCase()}
                 </h5>
-                <div
-                  className={
-                    "card-text " +
-                    (item.description ? "" : "undefined-infomation")
-                  }
-                >
-                  {item.description ? item.description : "No description"}
-                </div>
               </div>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
@@ -97,25 +88,20 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
       );
     });
     return (
-      <div className="dropdown-center">
+      <div>
         <button
           type="button"
-          className={`btn btn-primary dropdown-toggle ${
-            Object.entries(techStack).length === 0 ? "disabled" : ""
+          className={`btn btn-primary mb-3 ${
+            Object.entries(techStack).length !== 0 ? "" : "disabled"
           }`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          data-bs-auto-close="outside"
+          onClick={toggleContent}
         >
-          {Object.entries(techStack).length === 0
-            ? "Không có Tech stack"
-            : "Tech stack"}
+          {Object.entries(techStack).length !== 0 ? (showContent ? "Đóng" : "Chọn") : "Không có"}
         </button>
-        <div className="dropdown-menu personnel-dropdown-card-list ps-3 pe-3 ">
-          {renderCardsInSingleRow(
-            techStackOptions.map((card, index) => ({ key: index, card }))
-          )}
-        </div>
+          {showContent &&
+            renderCardsInSingleRow(
+              techStackOptions.map((card, index) => ({ key: index, card }))
+            )}
       </div>
     );
   } else {

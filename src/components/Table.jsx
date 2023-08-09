@@ -77,9 +77,14 @@ function Table({ data, columns }) {
               {columns.map((column, columnIndex) => {
                 let className = "text-break";
                 let content = item[column.dataField];
+
                 if (column.dataField === "status") {
                   className += " " + item[column.dataField].toLowerCase();
                   content = item[column.dataField].toUpperCase();
+                }
+
+                if(column.dataField === "name" || column.dataField === "description") {
+                  className += " mw-2"
                 }
 
                 if (column.isObject) {
@@ -114,7 +119,7 @@ function Table({ data, columns }) {
                 );
               })}
 
-              <td>
+              <td className="w-1">
                 <div className="d-flex justify-content-evenly">
                   <Form
                     action={`detail/${Object.keys(data)[startIndex + index]}`}

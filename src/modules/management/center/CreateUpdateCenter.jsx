@@ -6,9 +6,23 @@ import {
   getManagement,
   updateManagement,
 } from "../../../apis/database";
-import CategoryCardList from "../../../components/CategoryCardList";
-import CategoryWeightCardList from "../../../components/PersonnelCardList";
-import ProjectCardList from "../../../components/ProjectCardList";
+import CategoryCardList from "../../../components/card-list/CategoryCardList";
+import CategoryWeightCardList from "../../../components/card-list/PersonnelCardList";
+import ProjectCardList from "../../../components/card-list/ProjectCardList";
+
+const validate = () => {
+  const forms = document.querySelectorAll(".needs-validation");
+  let isValid = true;
+  Array.from(forms).forEach((form) => {
+    if (!form.checkValidity()) {
+      form.classList.add("was-validated");
+      isValid = false;
+      console.log(1);
+    }
+  });
+
+  return isValid;
+};
 
 export async function createLoader() {
   const obj = {};
@@ -24,10 +38,13 @@ export async function createAction({ request }) {
   newObj.techStack = formData.getAll("techStack");
   newObj.project = formData.getAll("project");
   newObj.personnel = formData.getAll("personnel");
-//   console.log(newObj);
-  await createManagement(newObj, "center");
-  return redirect(`/management/center`);
-  // return null
+  //   console.log(newObj);
+  if (validate()) {
+    await createManagement(newObj, "center");
+    return redirect(`/management/center`);
+  } else {
+    return null;
+  }
 }
 
 export async function updateLoader({ params }) {
@@ -50,9 +67,13 @@ export async function updateAction({ request, params }) {
   newObj.techStack = formData.getAll("techStack");
   newObj.project = formData.getAll("project");
   newObj.personnel = formData.getAll("personnel");
-//   console.log(newObj);
-  await updateManagement(params.id, newObj, "center");
-  return redirect(`/management/center`);
+  //   console.log(newObj);
+  if (validate()) {
+    await updateManagement(params.id, newObj, "center");
+    return redirect(`/management/center`);
+  } else {
+    return null;
+  }
 }
 
 export default function CreateUpdateCenter() {
@@ -82,20 +103,30 @@ export default function CreateUpdateCenter() {
       <div className="row">
         <div className="title">Trung tâm, bộ phận, phòng ban</div>
       </div>
-      <Form method="post" id="contact-form">
+      <Form
+        method="post"
+        id="contact-form"
+        className="needs-validation"
+        noValidate
+      >
         <label>
           <span>Tên*</span>
-          <input
-            type="text"
-            name="name"
-            placeholder="Tên"
-            defaultValue={obj.name}
-            required
-          />
+          <div className="d-flex flex-column">
+            <input
+              type="text"
+              name="name"
+              placeholder="Tên"
+              defaultValue={obj.name}
+              required
+              className="form-control"
+            />
+            <div className="invalid-feedback">Vui lòng nhập tên.</div>
+          </div>
         </label>
         <label>
           <span>Chức năng, nhiệm vụ</span>
           <textarea
+            className="form-control"
             name="description"
             defaultValue={obj.description}
             rows={6}

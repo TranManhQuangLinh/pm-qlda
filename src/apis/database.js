@@ -139,12 +139,14 @@ async function handleCascadingDeleteInCenter({ id, objName }) {
   const centerObjects = await getListManagement("center");
   for (const centerId in centerObjects) {
     const center = centerObjects[centerId];
-    const updatedObjList = center[objName].filter((objId) => objId !== id);
-    await updateManagement(
-      centerId,
-      { ...center, [objName]: updatedObjList },
-      "center"
-    );
+    if (center[objName]) {
+      const updatedObjList = center[objName].filter((objId) => objId !== id);
+      await updateManagement(
+        centerId,
+        { ...center, [objName]: updatedObjList },
+        "center"
+      );
+    }
   }
 }
 
@@ -152,12 +154,14 @@ async function handleCascadingDeleteInPersonnel({ id, objName }) {
   const personnelObjects = await getListManagement("personnel");
   for (const personnelId in personnelObjects) {
     const personnel = personnelObjects[personnelId];
-    const updatedObjList = personnel[objName].filter((objId) => objId !== id);
-    await updateManagement(
-      personnelId,
-      { ...personnel, [objName]: updatedObjList },
-      "personnel"
-    );
+    if (personnel[objName]) {
+      const updatedObjList = personnel[objName].filter((objId) => objId !== id);
+      await updateManagement(
+        personnelId,
+        { ...personnel, [objName]: updatedObjList },
+        "personnel"
+      );
+    }
   }
 }
 
@@ -165,12 +169,14 @@ async function handleCascadingDeleteInProject({ id, objName }) {
   const projectObjects = await getListManagement("project");
   for (const projectId in projectObjects) {
     const project = projectObjects[projectId];
-    const updatedObjList = project[objName].filter((objId) => objId !== id);
-    await updateManagement(
-      projectId,
-      { ...project, [objName]: updatedObjList },
-      "project"
-    );
+    if (project[objName]) {
+      const updatedObjList = project[objName].filter((objId) => objId !== id);
+      await updateManagement(
+        projectId,
+        { ...project, [objName]: updatedObjList },
+        "project"
+      );
+    }
   }
 }
 

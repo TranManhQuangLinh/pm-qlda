@@ -1,7 +1,7 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import { getCategory, getManagement } from "../../../apis/database";
 import TechStackCardList from "./components/TechStackCardList";
-import ProjectCardList from "../../../components/ProjectCardList";
+import ProjectCardList from "../../../components/card-list/ProjectCardList";
 import { getManagementObjects } from "../../../apis/apiUtils";
 
 export async function loader({ params }) {

@@ -318,7 +318,7 @@ i {
 
 #contact-form {
   display: flex;
-  max-width: 40rem;
+  /* max-width: 40rem; */
   flex-direction: column;
   gap: 1rem;
 }

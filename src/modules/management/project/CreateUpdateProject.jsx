@@ -6,10 +6,24 @@ import {
   getManagement,
   updateManagement,
 } from "../../../apis/database";
-import CategoryCardList from "../../../components/CategoryCardList";
-import CategoryWeightCardList from "../../../components/CategoryWeightCardList";
-import PersonnelCardList from "../../../components/PersonnelCardList";
-import CenterCardList from "../../../components/CenterCardList";
+import CategoryCardList from "../../../components/card-list/CategoryCardList";
+import CategoryWeightCardList from "../../../components/card-list/CategoryWeightCardList";
+import PersonnelCardList from "../../../components/card-list/PersonnelCardList";
+import CenterCardList from "../../../components/card-list/CenterCardList";
+
+const validate = () => {
+  const forms = document.querySelectorAll(".needs-validation");
+  let isValid = true;
+  Array.from(forms).forEach((form) => {
+    if (!form.checkValidity()) {
+      form.classList.add("was-validated");
+      isValid = false;
+      console.log(1);
+    }
+  });
+
+  return isValid;
+};
 
 export async function createLoader() {
   const obj = {};
@@ -29,9 +43,13 @@ export async function createAction({ request }) {
   newObj.techStack = formData.getAll("techStack");
   newObj.personnel = formData.getAll("personnel");
   newObj.center = formData.getAll("center");
-//   console.log(newObj);
-  await createManagement(newObj, "project");
-  return redirect(`/management/project`);
+  //   console.log(newObj);
+  if (validate()) {
+    await createManagement(newObj, "project");
+    return redirect(`/management/project`);
+  } else {
+    return null;
+  }
   // return null
 }
 
@@ -59,32 +77,45 @@ export async function updateAction({ request, params }) {
   newObj.techStack = formData.getAll("techStack");
   newObj.personnel = formData.getAll("personnel");
   newObj.center = formData.getAll("center");
-//   console.log(newObj);
-  await updateManagement(params.id, newObj, "project");
-  return redirect(`/management/project`);
+  //   console.log(newObj);
+  if (validate()) {
+    await updateManagement(params.id, newObj, "project");
+    return redirect(`/management/project`);
+  } else {
+    return null;
+  }
 }
 
 export default function CreateUpdateProject() {
   const navigate = useNavigate();
   const { obj, projectType, projectStatus, techStack, personnel, center } =
     useLoaderData();
-//   console.log(obj);
+  //   console.log(obj);
 
   return (
     <div className="container">
       <div className="row">
         <div className="title">Dự án</div>
       </div>
-      <Form method="post" id="contact-form">
+      <Form
+        method="post"
+        id="contact-form"
+        className="needs-validation"
+        noValidate
+      >
         <label>
           <span>Tên*</span>
-          <input
-            type="text"
-            name="name"
-            placeholder="Tên"
-            defaultValue={obj.name}
-            required
-          />
+          <div className="d-flex flex-column">
+            <input
+              type="text"
+              name="name"
+              placeholder="Tên"
+              defaultValue={obj.name}
+              required
+              className="form-control"
+            />
+            <div className="invalid-feedback">Vui lòng nhập tên.</div>
+          </div>
         </label>
 
         <label>

@@ -7,46 +7,46 @@ import {
   updateManagement,
 } from "../../../apis/database";
 import TechStackCardList from "./components/TechStackCardList";
-import ProjectCardList from "../../../components/ProjectCardList";
+import ProjectCardList from "../../../components/card-list/ProjectCardList";
 
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function validate(newObj) {
-  const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-  const phoneRegex = /^[\d-]+$/;
+const validate = () => {
+  const forms = document.querySelectorAll(".needs-validation");
+  let isValid = true;
 
-  const isDateOfBirthValid = dateRegex.test(newObj.dateOfBirth);
-  const isPhoneNumberValid = phoneRegex.test(newObj.phone);
+  Array.from(forms).forEach((form) => {
+    const phoneField = form.querySelector('input[name="phone"]');
+    if (phoneField) {
+      const phoneValue = +phoneField.value;
 
-  if (!isDateOfBirthValid) {
-    alert(
-      "Ngày sinh không hợp lệ. Vui lòng nhập đúng định dạng dd/mm/yyyy và giá trị ngày, tháng, năm hợp lệ."
-    );
-    return false;
-  } else {
-    const [day, month, year] = newObj.dateOfBirth.split("/");
-    const isValidDate = !isNaN(day) && !isNaN(month) && !isNaN(year);
-    const parsedDate = new Date(`${year}-${month}-${day}`);
-    // console.log(parsedDate);
-
-    if (!isValidDate || parsedDate.toString() === "Invalid Date") {
-      alert(
-        "Ngày sinh không hợp lệ. Vui lòng nhập đúng giá trị ngày, tháng, năm."
-      );
-      return false;
+      if (!Number.isInteger(phoneValue) || phoneValue <= 0) {
+        console.log(2);
+        phoneField.focus();
+        form.classList.add("was-validated");
+        phoneField.setCustomValidity("Invalid phone value");
+        phoneField.classList.remove("is-valid");
+        phoneField.classList.add("is-invalid");
+        isValid = false;
+      } else {
+        console.log(3);
+        phoneField.setCustomValidity("");
+        phoneField.classList.remove("is-invalid");
+        phoneField.classList.add("is-valid");
+      }
     }
-  }
 
-  if (!isPhoneNumberValid) {
-    alert(
-      "Số điện thoại không hợp lệ. Vui lòng chỉ nhập chữ số và dấu hyphen (-)."
-    );
-    return false;
-  }
-  return true;
-}
+    if (!form.checkValidity()) {
+      form.classList.add("was-validated");
+      isValid = false;
+      console.log(1);
+    }
+  });
+
+  return isValid;
+};
 
 export async function createLoader() {
   const obj = {};
@@ -77,7 +77,7 @@ export async function createAction({ request }) {
   }
   newObj.project = formData.getAll("project");
   // console.log(newObj);
-  if (validate(newObj)) {
+  if (validate()) {
     await createManagement(newObj, "personnel");
     return redirect(`/management/personnel`);
   } else {
@@ -122,7 +122,7 @@ export async function updateAction({ request, params }) {
 
   newObj.project = formData.getAll("project");
   // console.log(newObj);
-  if (validate(newObj)) {
+  if (validate()) {
     await updateManagement(params.id, newObj, "personnel");
     return redirect(`/management/personnel`);
   } else {
@@ -154,25 +154,55 @@ export default function CreateUpdatePersonnel() {
   //     }
   // }
 
+  const handlePhoneInputChange = (e) => {
+    if (
+      e.target.parentElement.parentElement.parentElement.classList.contains(
+        "was-validated"
+      )
+    ) {
+      const phoneField = e.target;
+      const phoneValue = +phoneField.value;
+      if (!Number.isInteger(phoneValue) || phoneValue <= 0) {
+        phoneField.setCustomValidity("Invalid phone value");
+        phoneField.classList.remove("is-valid");
+        phoneField.classList.add("is-invalid");
+      } else {
+        phoneField.setCustomValidity("");
+        phoneField.classList.remove("is-invalid");
+        phoneField.classList.add("is-valid");
+      }
+    }
+  };
+
   return (
     <div className="container">
       <div className="row">
         <div className="title">Nhân sự</div>
       </div>
-      <Form method="post" id="contact-form">
+      <Form
+        method="post"
+        id="contact-form"
+        className="needs-validation"
+        noValidate
+      >
         <label>
           <span>Tên*</span>
-          <input
-            type="text"
-            name="name"
-            placeholder="Tên"
-            defaultValue={obj.name}
-            required
-          />
+          <div className="d-flex flex-column">
+            <input
+              type="text"
+              name="name"
+              placeholder="Tên"
+              defaultValue={obj.name}
+              required
+              className="form-control"
+            />
+            <div className="invalid-feedback">Vui lòng nhập tên.</div>
+          </div>
         </label>
         <label>
           <span>Ngày sinh*</span>
           <DatePicker
+            className="form-control"
             name="dateOfBirth"
             placeholderText="dd/mm/yyyy"
             selected={startDate} // Use a state variable to store the selected date
@@ -184,13 +214,20 @@ export default function CreateUpdatePersonnel() {
 
         <label>
           <span>Số điện thoại*</span>
-          <input
-            type="text"
-            name="phone"
-            placeholder="Số điện thoại"
-            defaultValue={obj.phone}
-            required
-          />
+          <div className="d-flex flex-column">
+            <input
+              className="form-control"
+              type="text"
+              name="phone"
+              placeholder="Số điện thoại"
+              defaultValue={obj.phone}
+              required
+              onChange={handlePhoneInputChange}
+            />
+            <div className="invalid-feedback">
+              Vui lòng nhập số điện thoại hợp lệ.
+            </div>
+          </div>
         </label>
         <label>
           <span>Tech stack</span>

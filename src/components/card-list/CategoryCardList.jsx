@@ -1,4 +1,5 @@
-// when isCheckbox = false, obj isn't required
+import React, { useState } from "react";
+import { renderCardsInSingleRow } from "./utils";
 
 export default function CategoryCardList({
   categoryObj,
@@ -6,19 +7,13 @@ export default function CategoryCardList({
   isCheckbox,
   obj,
 }) {
-  let res;
+  const [showContent, setShowContent] = useState(false);
 
-  const renderCardsInSingleRow = (options) => {
-    return (
-      <div className="row card-list">
-        {options.map((item) => (
-          <div key={item.key} className={"col"}>
-            {item.card}
-          </div>
-        ))}
-      </div>
-    );
+  const toggleContent = () => {
+    setShowContent(!showContent);
   };
+
+  let res;
 
   if (!categoryObj) {
     res = <></>;
@@ -52,14 +47,6 @@ export default function CategoryCardList({
                   <h5 className={"card-title " + item.status}>
                     {item.status.toUpperCase()}
                   </h5>
-                  <div
-                    className={
-                      "card-text " +
-                      (item.description ? "" : "undefined-infomation")
-                    }
-                  >
-                    {item.description ? item.description : "No description"}
-                  </div>
                 </div>
               </div>
             </label>
@@ -67,30 +54,22 @@ export default function CategoryCardList({
         );
       }
     );
-    return (
-      <div className="dropdown-center">
+
+    res = (
+      <div>
         <button
           type="button"
-          className={`btn btn-primary dropdown-toggle ${
-            Object.entries(categoryObj).length === 0 ? "disabled" : ""
+          className={`btn btn-primary mb-3 ${
+            Object.entries(categoryObj).length !== 0 ? "" : "disabled"
           }`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          data-bs-auto-close="outside"
+          onClick={toggleContent}
         >
-          {name == "projectStatus"
-            ? Object.entries(categoryObj).length === 0
-              ? "Không có Trạng thái dự án"
-              : "Trạng thái dự án"
-            : Object.entries(categoryObj).length === 0
-            ? "Không có Tech stack"
-            : "Tech stack"}
+          {Object.entries(categoryObj).length !== 0 ? (showContent ? "Đóng" : "Chọn") : "Không có"}
         </button>
-        <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
-          {renderCardsInSingleRow(
+        {showContent &&
+          renderCardsInSingleRow(
             categoryObjOptions.map((card, index) => ({ key: index, card }))
           )}
-        </div>
       </div>
     );
   } else {
@@ -99,7 +78,7 @@ export default function CategoryCardList({
     // categoryObj parameter contains all tech stack of this object
     const categoryObjOptions = categoryObj.map((item) => {
       return (
-        <div className="card border-info mb-3">
+        <div className="card border-info mb-3" key={item.key}>
           <div
             className={
               "card-header " + (item.name ? "" : "undefined-infomation")
@@ -111,13 +90,6 @@ export default function CategoryCardList({
             <h5 className={"card-title " + item.status}>
               {item.status.toUpperCase()}
             </h5>
-            <div
-              className={
-                "card-text " + (item.description ? "" : "undefined-infomation")
-              }
-            >
-              {item.description ? item.description : "No description"}
-            </div>
           </div>
         </div>
       );

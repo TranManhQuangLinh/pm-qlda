@@ -1,43 +1,18 @@
 // when isCheckbox = false, obj isn't required
 
+import { useState } from "react";
+import { renderCardsInSingleRow } from "./utils";
+
 export default function ProjectCardList({ project, isCheckbox, obj }) {
+  const [showContent, setShowContent] = useState(false);
+
+  const toggleContent = () => {
+    setShowContent(!showContent);
+  };
+
   let res;
   // console.log(project);
   // console.log(obj);
-
-  const renderCardsInRows = (options) => {
-    const rows = [];
-    const cardsPerRow = 3; // Number of cards per row on medium-sized screens (md)
-
-    for (let i = 0; i < options.length; i += cardsPerRow) {
-      const rowItems = options.slice(i, i + cardsPerRow);
-
-      let colClassName;
-      switch (options.length) {
-        case 1:
-          colClassName = "col";
-          break;
-        case 2:
-          colClassName = "col-md-6";
-          break;
-        default:
-          colClassName = "col-lg-4 col-md-6";
-          break;
-      }
-
-      const row = (
-        <div key={i} className="row">
-          {rowItems.map((item) => (
-            <div key={item.key} className={colClassName}>
-              {item.card}
-            </div>
-          ))}
-        </div>
-      );
-      rows.push(row);
-    }
-    return rows;
-  };
 
   if (!project) {
     res = <></>;
@@ -74,23 +49,20 @@ export default function ProjectCardList({ project, isCheckbox, obj }) {
       );
     });
     return (
-      <div className="dropdown-center">
+      <div>
         <button
           type="button"
-          className={`btn btn-primary dropdown-toggle ${
-            Object.entries(project).length === 0 ? "disabled" : ""
+          className={`btn btn-primary mb-3 ${
+            Object.entries(project).length !== 0 ? "" : "disabled"
           }`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          data-bs-auto-close="outside"
+          onClick={toggleContent}
         >
-          {Object.entries(project).length === 0 ? "Không có Dự án" : "Dự án"}
+          {Object.entries(project).length !== 0 ? (showContent ? "Đóng" : "Chọn") : "Không có"}
         </button>
-        <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
-          {renderCardsInRows(
+        {showContent &&
+          renderCardsInSingleRow(
             centerOptions.map((card, index) => ({ key: index, card }))
           )}
-        </div>
       </div>
     );
   } else {
@@ -113,7 +85,7 @@ export default function ProjectCardList({ project, isCheckbox, obj }) {
 
     res = (
       <div className="d-flex flex-column">
-        {renderCardsInRows(
+        {renderCardsInSingleRow(
           centerOptions.map((card, index) => ({ key: index, card }))
         )}
       </div>

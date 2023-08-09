@@ -1,42 +1,28 @@
 // when isCheckbox = false, obj isn't required
 
+import { useState } from "react";
+
 export default function CenterCardList({ center, isCheckbox, obj }) {
+  const [showContent, setShowContent] = useState(false);
+
+  const toggleContent = () => {
+    setShowContent(!showContent);
+  };
+
   let res;
   // console.log(center);
   // console.log(obj);
 
-  const renderCardsInRows = (options) => {
-    const rows = [];
-    const cardsPerRow = 3; // Number of cards per row on medium-sized screens (md)
-
-    for (let i = 0; i < options.length; i += cardsPerRow) {
-      const rowItems = options.slice(i, i + cardsPerRow);
-
-      let colClassName;
-      switch (options.length) {
-        case 1:
-          colClassName = "col";
-          break;
-        case 2:
-          colClassName = "col-md-6";
-          break;
-        default:
-          colClassName = "col-lg-4 col-md-6";
-          break;
-      }
-
-      const row = (
-        <div key={i} className="row">
-          {rowItems.map((item) => (
-            <div key={item.key} className={colClassName}>
-              {item.card}
-            </div>
-          ))}
-        </div>
-      );
-      rows.push(row);
-    }
-    return rows;
+  const renderCardsInSingleRow = (options) => {
+    return (
+      <div className="row card-list">
+        {options.map((item) => (
+          <div key={item.key} className="col d-flex justify-content-center">
+            {item.card}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   if (!center) {
@@ -66,41 +52,26 @@ export default function CenterCardList({ center, isCheckbox, obj }) {
                   {item.name ? item.name : "No name"}
                 </div>
               </div>
-              <div className="card-body">
-                <div
-                  className={
-                    "card-text " +
-                    (item.description ? "" : "undefined-infomation")
-                  }
-                >
-                  {item.description ? item.description : "No description"}
-                </div>
-              </div>
             </div>
           </label>
         </div>
       );
     });
-    return (
-      <div className="dropdown-center">
+    res = (
+      <div>
         <button
           type="button"
-          className={`btn btn-primary dropdown-toggle ${
-            Object.entries(center).length === 0 ? "disabled" : ""
+          className={`btn btn-primary mb-3 ${
+            Object.entries(center).length !== 0 ? "" : "disabled"
           }`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          data-bs-auto-close="outside"
+          onClick={toggleContent}
         >
-          {Object.entries(center).length === 0
-            ? "Không có Trung tâm"
-            : "Trung tâm"}
+          {Object.entries(center).length !== 0 ? (showContent ? "Đóng" : "Chọn") : "Không có"}
         </button>
-        <div className="dropdown-menu dropdown-card-list ps-3 pe-3 ">
-          {renderCardsInRows(
+        {showContent &&
+          renderCardsInSingleRow(
             centerOptions.map((card, index) => ({ key: index, card }))
           )}
-        </div>
       </div>
     );
   } else {
@@ -132,7 +103,7 @@ export default function CenterCardList({ center, isCheckbox, obj }) {
 
     res = (
       <div className="d-flex flex-column">
-        {renderCardsInRows(
+        {renderCardsInSingleRow(
           centerOptions.map((card, index) => ({ key: index, card }))
         )}
       </div>

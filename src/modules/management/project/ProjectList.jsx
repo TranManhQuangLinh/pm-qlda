@@ -58,7 +58,7 @@ export default function ProjectList() {
     },
     {
       dataField: "personnel",
-      text: "Thành viên trong dự án",
+      text: "Thành viên",
       isObject: true,
       objGroup: "management",
     },
