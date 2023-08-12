@@ -28,7 +28,7 @@ export default function Layout() {
   ];
 
   const managementItems = [
-    { name: "center", label: "Trung tâm, bộ phận, phòng ban" },
+    { name: "center", label: "Trung tâm, bộ phận, phòng ban" },
     { name: "personnel", label: "Nhân sự" },
     { name: "project", label: "Dự án" },
     // Add more management items as needed

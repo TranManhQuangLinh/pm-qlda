@@ -136,7 +136,7 @@ export default function CreateUpdateCategory() {
   };
 
   return (
-    <div className="container">
+    <div className="container" data-testid="form-container">
       <div className="row">
         <div className="title">{title}</div>
       </div>

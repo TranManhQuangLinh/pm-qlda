@@ -60,7 +60,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
                     <input
                       name={"workingTime_" + key}
                       type="text"
-                      className="form-control"
+                      className="form-control w-100"
                       placeholder="Thời gian làm việc"
                       defaultValue={
                         techStackItem ? techStackItem.workingTime : ""
@@ -72,7 +72,7 @@ export default function TechStackCardList({ techStack, isCheckbox, obj }) {
                   <div className="form-group mb-0">
                     <textarea
                       name={"experience_" + key}
-                      className="form-control"
+                      className="form-control w-100"
                       rows="3"
                       placeholder="Framework đã sử dụng"
                       defaultValue={
