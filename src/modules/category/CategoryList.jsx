@@ -7,7 +7,7 @@ export async function loader({ params }) {
   const objName = params.objName;
   // console.log(objName);
   const data = await getListCategory(objName ? objName : "projectType");
-  // console.log(data);
+  console.log(data);
   return { data, objName };
 }
 
